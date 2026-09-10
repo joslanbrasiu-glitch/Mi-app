@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mi App</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:Arial,sans-serif;
+  background:#f5f5f5;
+  color:#222;
+  padding-bottom:75px;
+}
+header{
+  background:#fff;
+  padding:18px;
+  position:sticky;
+  top:0;
+  z-index:10;
+  border-bottom:1px solid #ddd;
+}
+header h1{font-size:24px}
+.search{
+  margin-top:12px;
+  width:100%;
+  padding:12px;
+  border:1px solid #ddd;
+  border-radius:20px;
+}
+main{max-width:600px;margin:auto;padding:15px}
+.section{display:none}
+.section.active{display:block}
+
+.card{
+  background:white;
+  border-radius:15px;
+  padding:15px;
+  margin-bottom:15px;
+  box-shadow:0 2px 8px #00000012;
+}
+.user{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:12px;
+}
+.avatar{
+  width:45px;height:45px;
+  border-radius:50%;
+  background:#ddd;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:20px;
+}
+.post{
+  background:#eee;
+  height:260px;
+  border-radius:12px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:45px;
+  margin-bottom:12px;
+}
+.actions{
+  display:flex;
+  justify-content:space-between;
+  gap:5px;
+}
+button{
+  border:0;
+  border-radius:20px;
+  padding:10px 13px;
+  cursor:pointer;
+}
+.action{background:#f0f0f0}
+.follow{background:#222;color:white}
+.support{
+  background:#111;
+  color:white;
+  width:100%;
+  margin-top:12px;
+}
+.premium{
+  border:2px dashed #aaa;
+  padding:18px;
+  text-align:center;
+}
+nav{
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  background:white;
+  border-top:1px solid #ddd;
+  display:flex;
+  justify-content:space-around;
+  padding:10px 4px;
+  z-index:20;
+}
+nav button{
+  background:white;
+  font-size:12px;
+}
+nav button span{
+  display:block;
+  font-size:22px;
+  margin-bottom:3px;
+}
+.profile{text-align:center}
+.profile .avatar{
+  margin:auto;
+  width:80px;
+  height:80px;
+  font-size:35px;
+}
+.stat{
+  display:flex;
+  justify-content:space-around;
+  margin:20px 0;
+}
+.createBox{text-align:center}
+.createBtn{
+  width:100%;
+  padding:15px;
+  background:#222;
+  color:white;
+  margin-top:10px;
+}
+.notice{
+  background:#fff3cd;
+  padding:12px;
+  border-radius:10px;
+  margin-bottom:15px;
+  font-size:14px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>✨ MI APP</h1>
+  <input class="search" placeholder="🔎 Buscar creadores...">
+</header>
+
+<main>
+
+<!-- INICIO -->
+<section id="inicio" class="section active">
+  <h2>Inicio</h2>
+
+  <div class="notice">
+    🚀 Primera versión de la plataforma.
+    La monetización está preparada para futuras versiones.
+  </div>
+
+  <div class="card">
+    <div class="user">
+      <div class="avatar">👩</div>
+      <div>
+        <b>Creadora Demo</b><br>
+        <small>@creadora</small>
+      </div>
+    </div>
+
+    <div class="post">📸</div>
+
+    <div class="actions">
+      <button class="action" onclick="like(this)">❤️ 125</button>
+      <button class="action">💬 23</button>
+      <button class="follow">⭐ Seguir</button>
+    </div>
+
+    <button class="support" onclick="support()">
+      💎 Apoyar creador
+    </button>
+  </div>
+
+  <div class="card">
+    <div class="user">
+      <div class="avatar">👨</div>
+      <div>
+        <b>Creador Demo</b><br>
+        <small>@creador</small>
+      </div>
+    </div>
+
+    <div class="premium">
+      🔒<br><br>
+      <b>Contenido exclusivo</b>
+      <p>Disponible próximamente.</p>
+      <button onclick="premium()">👑 Suscribirse</button>
+    </div>
+  </div>
+</section>
+
+<!-- EXPLORAR -->
+<section id="explorar" class="section">
+  <h2>🔎 Explorar</h2>
+
+  <div class="card">
+    <h3>Creadores destacados</h3>
+    <p>👩 @creadora</p>
+    <p>👨 @creador</p>
+    <p>⭐ @talento</p>
+  </div>
+</section>
+
+<!-- CREAR -->
+<section id="crear" class="section">
+  <h2>➕ Crear</h2>
+
+  <div class="card createBox">
+    <p>Publica tu contenido</p>
+
+    <button class="createBtn" onclick="createPost()">
+      📸 Crear publicación
+    </button>
+
+    <button class="createBtn" onclick="createVideo()">
+      🎥 Subir vídeo
+    </button>
+
+    <button class="createBtn" onclick="createText()">
+      📝 Crear texto
+    </button>
+  </div>
+</section>
+
+<!-- MENSAJES -->
+<section id="mensajes" class="section">
+  <h2>💬 Mensajes</h2>
+
+  <div class="card">
+    <p>📩 Los mensajes estarán disponibles próximamente.</p>
+  </div>
+</section>
+
+<!-- PERFIL -->
+<section id="perfil" class="section">
+  <div class="card profile">
+    <div class="avatar">👤</div>
+    <h2>Mi perfil</h2>
+    <p>@miusuario</p>
+
+    <div class="stat">
+      <div><b>0</b><br>Seguidores</div>
+      <div><b>0</b><br>Siguiendo</div>
+      <div><b>0</b><br>Me gusta</div>
+    </div>
+
+    <button class="follow">✏️ Editar perfil</button>
+  </div>
+
+  <div class="card">
+    <h3>💰 Monetización</h3>
+    <p>Ganancias: €0,00</p>
+    <p>Suscripciones: 0</p>
+    <p>Propinas: €0,00</p>
+  </div>
+</section>
+
+</main>
+
+<nav>
+  <button onclick="show('inicio')">
+    <span>🏠</span>Inicio
+  </button>
+
+  <button onclick="show('explorar')">
+    <span>🔎</span>Explorar
+  </button>
+
+  <button onclick="show('crear')">
+    <span>➕</span>Crear
+  </button>
+
+  <button onclick="show('mensajes')">
+    <span>💬</span>Mensajes
+  </button>
+
+  <button onclick="show('perfil')">
+    <span>👤</span>Perfil
+  </button>
+</nav>
+
+<script>
+function show(id){
+  document.querySelectorAll('.section')
+    .forEach(s=>s.classList.remove('active'));
+
+  document.getElementById(id)
+    .classList.add('active');
+
+  window.scrollTo(0,0);
+}
+
+function like(btn){
+  let n=parseInt(btn.textContent.match(/\d+/)[0]);
+  btn.textContent='❤️ '+(n+1);
+}
+
+function support(){
+  alert('💎 Apoyar creador\n\nEsta función será conectada a pagos reales en una futura versión.');
+}
+
+function premium(){
+  alert('👑 Suscripciones\n\nPreparado para conectar pagos y renovaciones automáticas.');
+}
+
+function createPost(){
+  alert('📸 Crear publicación\n\nLa subida de contenido real se añadirá en la siguiente fase.');
+}
+
+function createVideo(){
+  alert('🎥 Subir vídeo\n\nLa subida de vídeos se añadirá posteriormente.');
+}
+
+function createText(){
+  alert('📝 Crear texto\n\nEditor preparado para una futura actualización.');
+}
+</script>
+
+</body>
+</html>
