@@ -4,7 +4,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>KreatoFans App</title>
+  <title>KreatoFans</title>
+  
+  <meta name="application-name" content="KreatoFans">
+  <meta name="apple-mobile-web-app-title" content="KreatoFans">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#0b0f19">
+  
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230b0f19'/><path d='M55 10 L20 55 L45 55 L35 90 L80 40 L55 40 Z' fill='%2306b6d4'/></svg>">
+  <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230b0f19'/><path d='M55 10 L20 55 L45 55 L35 90 L80 40 L55 40 Z' fill='%2306b6d4'/></svg>">
+
   <style>
     :root {
       --bg: #0b0f19;          
@@ -24,6 +33,12 @@
     .brand-logo { font-size: 1.3rem; font-weight: 900; background: linear-gradient(135deg, var(--primary), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
     .wallet-badge { background: #1e293b; padding: 6px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: bold; color: #10b981; border: 1px solid #334155; }
 
+    /* Historias */
+    .stories-bar { display: flex; gap: 12px; padding: 12px 15px; overflow-x: auto; border-bottom: 1px solid #1e293b; background: var(--card); }
+    .story-item { display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 0.7rem; color: var(--muted); cursor: pointer; flex-shrink: 0; }
+    .story-ring { width: 56px; height: 56px; border-radius: 50%; padding: 2px; background: linear-gradient(135deg, var(--primary), var(--accent)); display: flex; align-items: center; justify-content: center; }
+    .story-avatar { width: 100%; height: 100%; border-radius: 50%; background: #0b0f19; border: 2px solid #0b0f19; object-fit: cover; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+
     /* Secciones */
     .tab-content { display: none; padding-bottom: 20px; }
     .tab-content.active { display: block; }
@@ -32,26 +47,43 @@
     .post { background: var(--card); margin: 15px; border-radius: 16px; overflow: hidden; border: 1px solid #1e293b; box-shadow: 0 4px 20px rgba(0,0,0,0.4); }
     .post-header { padding: 12px; display: flex; align-items: center; justify-content: space-between; }
     .user-info { display: flex; align-items: center; gap: 10px; }
-    .avatar { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--accent)); display: flex; align-items: center; justify-content: center; font-weight: bold; color: white; }
+    .avatar { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--accent)); display: flex; align-items: center; justify-content: center; font-weight: bold; color: white; overflow: hidden; }
+    .avatar img { width: 100%; height: 100%; object-fit: cover; }
     .btn-follow { background: transparent; color: var(--accent); border: 1px solid var(--accent); padding: 4px 12px; border-radius: 15px; font-size: 0.75rem; font-weight: bold; cursor: pointer; }
     .btn-follow.following { background: var(--accent); color: #000; }
 
     .post-media { width: 100%; min-height: 250px; background: #000; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; overflow: hidden; }
-    .post-media img, .post-media video { width: 100%; height: auto; object-fit: cover; }
+    .post-media img, .post-media video { width: 100%; height: auto; object-fit: cover; display: block; }
+    
+    /* Marca de agua */
+    .watermark { position: absolute; bottom: 10px; right: 12px; background: rgba(11, 15, 25, 0.75); color: #fff; padding: 4px 10px; border-radius: 12px; font-size: 0.75rem; font-weight: 800; letter-spacing: 0.5px; border: 1px solid rgba(255,255,255,0.2); backdrop-filter: blur(4px); pointer-events: none; }
 
-    /* Paywall para contenido exclusivo */
+    /* Paywall */
     .locked-overlay { position: absolute; inset: 0; background: rgba(11, 15, 25, 0.92); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; padding: 20px; backdrop-filter: blur(8px); }
     .btn-unlock { background: linear-gradient(135deg, var(--primary), var(--accent)); color: white; border: none; padding: 10px 20px; border-radius: 20px; font-weight: bold; cursor: pointer; }
 
     .post-actions { padding: 12px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #1e293b; }
-    .reactions { display: flex; gap: 12px; }
-    .btn-react { background: none; border: none; color: var(--text); font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; gap: 4px; }
+    .reactions { display: flex; gap: 10px; align-items: center; }
+    .btn-react { background: none; border: none; color: var(--text); font-size: 1rem; cursor: pointer; display: flex; align-items: center; gap: 4px; }
+    .btn-download { background: rgba(255,255,255,0.1); color: var(--text); border: 1px solid #334155; padding: 5px 10px; border-radius: 15px; font-size: 0.75rem; cursor: pointer; text-decoration: none; display: flex; align-items: center; gap: 4px; }
+    .btn-download.disabled { opacity: 0.4; cursor: not-allowed; pointer-events: none; }
     .btn-gift { background: var(--gold); color: #000; border: none; padding: 6px 14px; border-radius: 20px; font-weight: bold; cursor: pointer; font-size: 0.8rem; }
 
-    /* Formularios y Perfil */
+    /* Formularios */
     .publish-form { padding: 20px; display: flex; flex-direction: column; gap: 15px; }
     .publish-form input, .publish-form textarea, .publish-form select { width: 100%; padding: 12px; background: var(--card); border: 1px solid #1e293b; border-radius: 10px; color: var(--text); }
     .btn-submit { background: linear-gradient(135deg, var(--primary), var(--accent)); color: white; border: none; padding: 14px; border-radius: 25px; font-weight: bold; cursor: pointer; font-size: 1rem; }
+
+    /* Perfil */
+    .profile-cover { width: 100%; height: 140px; background: linear-gradient(135deg, #1e1b4b, #0e7490); position: relative; cursor: pointer; }
+    .profile-cover img { width: 100%; height: 100%; object-fit: cover; }
+    .profile-avatar-container { position: relative; margin-top: -40px; text-align: center; }
+    .profile-avatar-large { width: 90px; height: 90px; border-radius: 50%; border: 3px solid var(--bg); background: linear-gradient(135deg, var(--primary), var(--accent)); margin: 0 auto; overflow: hidden; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 2rem; font-weight: bold; color: white; }
+    .profile-avatar-large img { width: 100%; height: 100%; object-fit: cover; }
+    
+    .profile-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; margin-top: 15px; }
+    .profile-grid-item { aspect-ratio: 1; background: var(--card); overflow: hidden; }
+    .profile-grid-item img { width: 100%; height: 100%; object-fit: cover; }
 
     .chat-item { background: var(--card); padding: 15px; border-radius: 12px; margin-bottom: 10px; display: flex; align-items: center; gap: 12px; border: 1px solid #1e293b; }
 
@@ -70,6 +102,25 @@
   </header>
 
   <div id="tab-feed" class="tab-content active">
+    
+    <div class="stories-bar">
+      <div class="story-item" onclick="document.getElementById('fileStory').click()">
+        <div class="story-ring" style="background: var(--card); border: 1px dashed var(--accent);">
+          <div class="story-avatar" style="font-size: 1.2rem; color: var(--accent);">+</div>
+        </div>
+        <span>Mi Historia</span>
+        <input type="file" id="fileStory" accept="image/*" style="display:none" onchange="addStory(this)">
+      </div>
+      <div class="story-item">
+        <div class="story-ring"><div class="story-avatar">A</div></div>
+        <span>Artista</span>
+      </div>
+      <div class="story-item">
+        <div class="story-ring"><div class="story-avatar">C</div></div>
+        <span>Creadora</span>
+      </div>
+    </div>
+
     <div id="feed-container">
       
       <article class="post">
@@ -77,19 +128,20 @@
           <div class="user-info">
             <div class="avatar">A</div>
             <div>
-              <strong>Artista_Oficial</strong>
+              <strong>Artista_Oficial <span style="color:var(--accent);">✔</span></strong>
               <p style="font-size:0.75rem; color:var(--muted)">Público • <span id="fansCount1">128</span> Fans</p>
             </div>
           </div>
           <button class="btn-follow" onclick="toggleFan(this, 'fansCount1')">+ Ser Fan</button>
         </div>
         <div class="post-media">
-          <img src="https://picsum.photos/400/300?random=1" alt="Contenido">
+          <img src="https://picsum.photos/400/300?random=1" id="imgSample1" alt="Contenido">
+          <div class="watermark">⚡ KREATOFANS</div>
         </div>
         <div class="post-actions">
           <div class="reactions">
             <button class="btn-react" onclick="likePost(this, 'like1')">❤️ <span id="like1">24</span></button>
-            <button class="btn-react" onclick="likePost(this, 'love1')">🔥 <span id="love1">18</span></button>
+            <a class="btn-download" href="https://picsum.photos/400/300?random=1" download="KreatoFans_Media.jpg" target="_blank">📥 Descargar</a>
           </div>
           <button class="btn-gift" onclick="sendGift(5)">🎁 Regalo Fan ($5)</button>
         </div>
@@ -100,7 +152,7 @@
           <div class="user-info">
             <div class="avatar">C</div>
             <div>
-              <strong>Creadora_VIP</strong>
+              <strong>Creadora_VIP <span style="color:var(--accent);">✔</span></strong>
               <p style="font-size:0.75rem; color:var(--muted)">Exclusivo Fans • $10.00</p>
             </div>
           </div>
@@ -112,10 +164,12 @@
             <p style="font-weight:bold;">Contenido Exclusivo para Fans</p>
             <button class="btn-unlock" onclick="unlockContent('mediaLocked2', 'paywall2', 10)">Desbloquear por $10.00</button>
           </div>
+          <div class="watermark">⚡ KREATOFANS</div>
         </div>
         <div class="post-actions">
           <div class="reactions">
             <button class="btn-react">💬 Comentar</button>
+            <button class="btn-download disabled" title="Descargas deshabilitadas por el creador">🚫 No descargable</button>
           </div>
           <button class="btn-gift" onclick="sendGift(2)">🎁 Regalo Fan ($2)</button>
         </div>
@@ -151,10 +205,16 @@
       <input type="file" id="postImage" accept="image/*,video/*" required>
       <textarea id="postCaption" placeholder="Escribe una descripción para tus fans..." rows="3" required></textarea>
       
-      <label style="font-size: 0.85rem; color: var(--muted);">Acceso a la publicación:</label>
+      <label style="font-size: 0.85rem; color: var(--muted);">Acceso al contenido:</label>
       <select id="postAccess">
         <option value="free">Gratis para todos</option>
         <option value="locked">Exclusivo de Fans ($5.00)</option>
+      </select>
+
+      <label style="font-size: 0.85rem; color: var(--muted);">Permisos de descarga:</label>
+      <select id="allowDownload">
+        <option value="yes">✅ Permitir que los fans descarguen (Con Marca de Agua)</option>
+        <option value="no">🔒 Prohibir descargas de esta publicación</option>
       </select>
 
       <button type="submit" class="btn-submit">Publicar en KreatoFans</button>
@@ -163,7 +223,7 @@
 
   <div id="tab-chat" class="tab-content" style="padding: 20px;">
     <h2 style="margin-bottom: 15px;">💬 Mensajes Directos</h2>
-    <div class="chat-item" onclick="alert('Abriendo chat de prueba con Fan_VIP_1')">
+    <div class="chat-item" onclick="alert('Abriendo chat con Fan_VIP_1')">
       <div class="avatar">F1</div>
       <div>
         <strong>Fan_VIP_1</strong>
@@ -172,19 +232,45 @@
     </div>
   </div>
 
-  <div id="tab-profile" class="tab-content" style="padding: 20px; text-align: center;">
-    <div class="avatar" style="width: 80px; height: 80px; margin: 0 auto; font-size: 2rem;">Mi</div>
-    <h2 style="margin-top: 10px;">Mi Perfil Creador</h2>
-    <p style="color: var(--muted);">@mi_usuario_kreato</p>
-    <div style="display: flex; justify-content: space-around; margin-top: 20px; background: var(--card); padding: 15px; border-radius: 12px;">
-      <div>
-        <strong>142</strong>
-        <p style="font-size:0.75rem; color:var(--muted);">Fans</p>
+  <div id="tab-profile" class="tab-content">
+    
+    <div class="profile-cover" id="coverContainer" onclick="document.getElementById('fileCover').click()">
+      <img id="coverImg" src="https://picsum.photos/600/200?random=10" alt="Portada">
+      <span style="position: absolute; right: 10px; bottom: 10px; background: rgba(0,0,0,0.6); padding: 4px 8px; border-radius: 12px; font-size: 0.7rem;">📷 Cambiar Portada</span>
+      <input type="file" id="fileCover" accept="image/*" style="display:none" onchange="updateImage(this, 'coverImg')">
+    </div>
+
+    <div class="profile-avatar-container">
+      <div class="profile-avatar-large" onclick="document.getElementById('fileAvatar').click()">
+        <img id="profileImg" src="" style="display:none;">
+        <span id="avatarLetter">Mi</span>
       </div>
-      <div>
-        <strong>8</strong>
-        <p style="font-size:0.75rem; color:var(--muted);">Publicaciones</p>
+      <input type="file" id="fileAvatar" accept="image/*" style="display:none" onchange="updateProfileAvatar(this)">
+    </div>
+
+    <div style="text-align: center; padding: 15px;">
+      <h2>Mi Perfil Creador <span style="color:var(--accent);">✔</span></h2>
+      <p style="color: var(--muted); font-size: 0.85rem;">@mi_usuario_kreato</p>
+
+      <p id="bioText" onclick="editBio()" style="margin-top: 10px; font-size: 0.9rem; color: #cbd5e1; background: var(--card); padding: 8px 12px; border-radius: 10px; display: inline-block; border: 1px solid #1e293b; cursor: pointer;">
+        ✨ Toca aquí para escribir tu biografía...
+      </p>
+
+      <div style="display: flex; justify-content: space-around; margin-top: 15px; background: var(--card); padding: 12px; border-radius: 12px; border: 1px solid #1e293b;">
+        <div><strong>142</strong><p style="font-size:0.75rem; color:var(--muted);">Fans</p></div>
+        <div><strong>1.2k</strong><p style="font-size:0.75rem; color:var(--muted);">Me Gusta</p></div>
+        <div><strong id="postCounter">2</strong><p style="font-size:0.75rem; color:var(--muted);">Publicaciones</p></div>
       </div>
+
+      <button onclick="shareProfile()" style="width: 100%; margin-top: 12px; background: transparent; border: 1px solid var(--accent); color: var(--accent); padding: 8px; border-radius: 20px; font-weight: bold; cursor: pointer;">
+        🔗 Compartir Perfil
+      </button>
+    </div>
+
+    <h3 style="padding: 0 15px; margin-top: 10px; font-size: 1rem;">📷 Galería</h3>
+    <div class="profile-grid" id="profileGrid">
+      <div class="profile-grid-item"><img src="https://picsum.photos/400/300?random=1"></div>
+      <div class="profile-grid-item"><img src="https://picsum.photos/400/300?random=8"></div>
     </div>
   </div>
 
@@ -199,6 +285,7 @@
 
 <script>
   let creatorEarnings = parseFloat(localStorage.getItem('earnings') || '0.00');
+  let userAvatarUrl = '';
   updateWallet();
 
   function updateWallet() {
@@ -247,15 +334,69 @@
     creatorEarnings += creatorCut;
     updateWallet();
     document.getElementById(paywallId).style.display = 'none';
-    document.getElementById(mediaId).innerHTML = `<img src="https://picsum.photos/400/300?random=8" style="width:100%; height:100%; object-fit:cover;">`;
+    document.getElementById(mediaId).innerHTML = `
+      <img src="https://picsum.photos/400/300?random=8" style="width:100%; height:100%; object-fit:cover;">
+      <div class="watermark">⚡ KREATOFANS</div>
+    `;
     alert(`¡Contenido desbloqueado!\nGanancia acreditada: $${creatorCut.toFixed(2)}`);
   }
 
+  function updateImage(input, targetId) {
+    if (input.files && input.files[0]) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        document.getElementById(targetId).src = e.target.result;
+      };
+      reader.readAsDataURL(input.files[0]);
+    }
+  }
+
+  function updateProfileAvatar(input) {
+    if (input.files && input.files[0]) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        userAvatarUrl = e.target.result;
+        const img = document.getElementById('profileImg');
+        img.src = userAvatarUrl;
+        img.style.display = 'block';
+        document.getElementById('avatarLetter').style.display = 'none';
+      };
+      reader.readAsDataURL(input.files[0]);
+    }
+  }
+
+  function editBio() {
+    const newBio = prompt("Escribe tu biografía:", "✨ Creador oficial de KreatoFans | Contenido exclusivo diario 🔥");
+    if (newBio) {
+      document.getElementById('bioText').innerText = newBio;
+    }
+  }
+
+  function shareProfile() {
+    if (navigator.share) {
+      navigator.share({
+        title: 'Mi Perfil KreatoFans',
+        url: window.location.href
+      });
+    } else {
+      navigator.clipboard.writeText(window.location.href);
+      alert("¡Enlace del perfil copiado al portapapeles!");
+    }
+  }
+
+  function addStory(input) {
+    if (input.files && input.files[0]) {
+      alert("¡Historia publicada en tu perfil por 24 horas!");
+    }
+  }
+
+  /* Publicar con permiso de descarga opcional */
   function createNewPost(e) {
     e.preventDefault();
     const fileInput = document.getElementById('postImage');
     const caption = document.getElementById('postCaption').value;
     const access = document.getElementById('postAccess').value;
+    const allowDownload = document.getElementById('allowDownload').value;
 
     if (fileInput.files && fileInput.files[0]) {
       const file = fileInput.files[0];
@@ -263,9 +404,10 @@
       
       reader.onload = function(evt) {
         const isVideo = file.type.startsWith('video/');
+        const mediaSrc = evt.target.result;
         const mediaHTML = isVideo 
-          ? `<video src="${evt.target.result}" controls style="width:100%;"></video>`
-          : `<img src="${evt.target.result}" alt="Foto">`;
+          ? `<video src="${mediaSrc}" controls style="width:100%;"></video>`
+          : `<img src="${mediaSrc}" alt="Foto">`;
 
         const uniqueId = Date.now();
         let contentOverlay = '';
@@ -280,24 +422,38 @@
           `;
         }
 
+        const avatarMarkup = userAvatarUrl 
+          ? `<img src="${userAvatarUrl}">` 
+          : 'Mi';
+
+        // Botón de descarga condicional
+        let downloadButtonHTML = '';
+        if (allowDownload === 'yes') {
+          downloadButtonHTML = `<a class="btn-download" href="${mediaSrc}" download="KreatoFans_${uniqueId}.${isVideo ? 'mp4' : 'jpg'}">📥 Descargar</a>`;
+        } else {
+          downloadButtonHTML = `<button class="btn-download disabled" title="Descargas deshabilitadas por el creador">🚫 No descargable</button>`;
+        }
+
         const newPostHTML = `
           <article class="post">
             <div class="post-header">
               <div class="user-info">
-                <div class="avatar">Mi</div>
+                <div class="avatar">${avatarMarkup}</div>
                 <div>
-                  <strong>Mi_Perfil</strong>
+                  <strong>Mi_Perfil <span style="color:var(--accent);">✔</span></strong>
                   <p style="font-size:0.75rem; color:var(--muted)">Ahora mismo • ${access === 'locked' ? 'Exclusivo' : 'Público'}</p>
                 </div>
               </div>
             </div>
             <div class="post-media" id="media-${uniqueId}">
               ${access === 'locked' ? contentOverlay : mediaHTML}
+              <div class="watermark">⚡ KREATOFANS</div>
             </div>
             <div style="padding: 12px; font-size: 0.9rem;">${caption}</div>
             <div class="post-actions">
               <div class="reactions">
                 <button class="btn-react" onclick="likePost(this, 'like-${uniqueId}')">❤️ <span id="like-${uniqueId}">0</span></button>
+                ${downloadButtonHTML}
               </div>
               <button class="btn-gift" onclick="sendGift(2)">🎁 Regalo Fan ($2)</button>
             </div>
@@ -305,6 +461,15 @@
         `;
 
         document.getElementById('feed-container').insertAdjacentHTML('afterbegin', newPostHTML);
+        
+        if (!isVideo && access !== 'locked') {
+          const gridItem = `<div class="profile-grid-item"><img src="${mediaSrc}"></div>`;
+          document.getElementById('profileGrid').insertAdjacentHTML('afterbegin', gridItem);
+        }
+
+        let postCount = parseInt(document.getElementById('postCounter').innerText);
+        document.getElementById('postCounter').innerText = postCount + 1;
+
         document.getElementById('postCaption').value = '';
         fileInput.value = '';
         switchTab('feed');
