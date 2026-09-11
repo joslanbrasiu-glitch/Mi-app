@@ -28,6 +28,37 @@
     body { background-color: var(--bg); color: var(--text); padding-bottom: 75px; display: flex; justify-content: center; }
     .app-container { width: 100%; max-width: 480px; min-height: 100vh; background: var(--bg); border-x: 1px solid #1e293b; position: relative; }
     
+    /* Banner PWA */
+    #pwa-install-banner {
+      display: none; position: sticky; top: 0; z-index: 100;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: white; padding: 12px 15px; border-bottom: 1px solid rgba(255,255,255,0.2);
+      align-items: center; justify-content: space-between; font-size: 0.85rem; font-weight: bold;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    }
+    #pwa-install-banner button {
+      background: white; color: #000; border: none; padding: 6px 14px;
+      border-radius: 20px; font-weight: bold; cursor: pointer; font-size: 0.8rem;
+    }
+
+    /* Splash Screen */
+    #splash-screen {
+      position: fixed; inset: 0; background: var(--bg); z-index: 999;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      transition: opacity 0.5s ease, visibility 0.5s;
+    }
+    .splash-logo { font-size: 2rem; font-weight: 900; background: linear-gradient(135deg, var(--primary), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: pulse 1.5s infinite; }
+    @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+
+    /* Toast */
+    #toast {
+      position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-100px);
+      background: var(--card); border: 1px solid var(--accent); color: var(--text);
+      padding: 12px 20px; border-radius: 25px; box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+      z-index: 100; opacity: 0; transition: all 0.3s ease; font-size: 0.85rem; font-weight: bold;
+    }
+    #toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
     /* Header */
     header { background: rgba(11, 15, 25, 0.9); backdrop-filter: blur(12px); position: sticky; top: 0; z-index: 10; padding: 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1e293b; }
     .brand-logo { font-size: 1.3rem; font-weight: 900; background: linear-gradient(135deg, var(--primary), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
@@ -39,9 +70,17 @@
     .story-ring { width: 56px; height: 56px; border-radius: 50%; padding: 2px; background: linear-gradient(135deg, var(--primary), var(--accent)); display: flex; align-items: center; justify-content: center; }
     .story-avatar { width: 100%; height: 100%; border-radius: 50%; background: #0b0f19; border: 2px solid #0b0f19; object-fit: cover; display: flex; align-items: center; justify-content: center; font-weight: bold; }
 
-    /* Secciones */
+    /* Tabs */
     .tab-content { display: none; padding-bottom: 20px; }
     .tab-content.active { display: block; }
+
+    /* Buscador Avanzado */
+    .search-section { padding: 15px; background: var(--card); border-bottom: 1px solid #1e293b; }
+    .search-bar { display: flex; gap: 8px; margin-bottom: 10px; }
+    .search-bar input { flex: 1; padding: 10px; background: #0b0f19; border: 1px solid #334155; border-radius: 20px; color: #fff; }
+    .filter-tags { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 5px; }
+    .chip { background: #1e293b; color: var(--muted); padding: 5px 12px; border-radius: 15px; font-size: 0.75rem; cursor: pointer; white-space: nowrap; border: 1px solid transparent; }
+    .chip.active { background: rgba(6, 182, 212, 0.2); color: var(--accent); border-color: var(--accent); font-weight: bold; }
 
     /* Post Card */
     .post { background: var(--card); margin: 15px; border-radius: 16px; overflow: hidden; border: 1px solid #1e293b; box-shadow: 0 4px 20px rgba(0,0,0,0.4); }
@@ -49,13 +88,21 @@
     .user-info { display: flex; align-items: center; gap: 10px; }
     .avatar { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--accent)); display: flex; align-items: center; justify-content: center; font-weight: bold; color: white; overflow: hidden; }
     .avatar img { width: 100%; height: 100%; object-fit: cover; }
-    .btn-follow { background: transparent; color: var(--accent); border: 1px solid var(--accent); padding: 4px 12px; border-radius: 15px; font-size: 0.75rem; font-weight: bold; cursor: pointer; }
+    .collab-tag { font-size: 0.7rem; background: rgba(139, 92, 246, 0.2); color: var(--primary); padding: 2px 6px; border-radius: 8px; border: 1px solid var(--primary); font-weight: bold; }
+
+    .btn-follow { background: transparent; color: var(--accent); border: 1px solid var(--accent); padding: 4px 12px; border-radius: 15px; font-size: 0.75rem; font-weight: bold; cursor: pointer; transition: 0.2s; }
     .btn-follow.following { background: var(--accent); color: #000; }
 
     .post-media { width: 100%; min-height: 250px; background: #000; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; overflow: hidden; }
     .post-media img, .post-media video { width: 100%; height: auto; object-fit: cover; display: block; }
     
-    /* Marca de agua */
+    /* Filtros para la vista previa de imagen/video */
+    .filter-none { filter: none; }
+    .filter-natural { filter: brightness(1.05) contrast(1.02) saturate(1.1) sepia(0.05); }
+    .filter-warm { filter: sepia(0.25) saturate(1.2) brightness(1.02); }
+    .filter-cool { filter: hue-rotate(180deg) saturate(0.8) contrast(1.1); }
+    .filter-bw { filter: grayscale(1); }
+
     .watermark { position: absolute; bottom: 10px; right: 12px; background: rgba(11, 15, 25, 0.75); color: #fff; padding: 4px 10px; border-radius: 12px; font-size: 0.75rem; font-weight: 800; letter-spacing: 0.5px; border: 1px solid rgba(255,255,255,0.2); backdrop-filter: blur(4px); pointer-events: none; }
 
     /* Paywall */
@@ -74,6 +121,12 @@
     .publish-form input, .publish-form textarea, .publish-form select { width: 100%; padding: 12px; background: var(--card); border: 1px solid #1e293b; border-radius: 10px; color: var(--text); }
     .btn-submit { background: linear-gradient(135deg, var(--primary), var(--accent)); color: white; border: none; padding: 14px; border-radius: 25px; font-weight: bold; cursor: pointer; font-size: 1rem; }
 
+    /* Top Fans / Clientes */
+    .top-fans-panel { background: rgba(245, 158, 11, 0.1); border: 1px solid var(--gold); border-radius: 12px; padding: 12px; margin-bottom: 15px; }
+    .chat-item { background: var(--card); padding: 15px; border-radius: 12px; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; border: 1px solid #1e293b; }
+    .chat-info { display: flex; align-items: center; gap: 12px; }
+    .top-badge { background: var(--gold); color: #000; font-size: 0.7rem; font-weight: 800; padding: 2px 8px; border-radius: 10px; }
+
     /* Perfil */
     .profile-cover { width: 100%; height: 140px; background: linear-gradient(135deg, #1e1b4b, #0e7490); position: relative; cursor: pointer; }
     .profile-cover img { width: 100%; height: 100%; object-fit: cover; }
@@ -85,15 +138,25 @@
     .profile-grid-item { aspect-ratio: 1; background: var(--card); overflow: hidden; }
     .profile-grid-item img { width: 100%; height: 100%; object-fit: cover; }
 
-    .chat-item { background: var(--card); padding: 15px; border-radius: 12px; margin-bottom: 10px; display: flex; align-items: center; gap: 12px; border: 1px solid #1e293b; }
-
     /* Bottom Nav */
     nav { position: fixed; bottom: 0; width: 100%; max-width: 480px; background: rgba(22, 31, 50, 0.95); backdrop-filter: blur(10px); display: flex; justify-content: space-around; padding: 12px 0; border-top: 1px solid #1e293b; z-index: 20; }
-    nav button { background: none; border: none; color: var(--muted); font-size: 0.75rem; display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; }
+    nav button { background: none; border: none; color: var(--muted); font-size: 0.75rem; display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; transition: 0.2s; }
     nav button.active { color: var(--accent); font-weight: bold; }
   </style>
 </head>
 <body>
+
+<div id="pwa-install-banner">
+  <span>📱 Instala KreatoFans en tu celular</span>
+  <button id="btnInstallPwa">INSTALAR</button>
+</div>
+
+<div id="splash-screen">
+  <div class="splash-logo">⚡ KREATOFANS</div>
+  <p style="color: var(--muted); margin-top: 10px; font-size: 0.85rem;">Cargando tu comunidad...</p>
+</div>
+
+<div id="toast">¡Notificación de KreatoFans!</div>
 
 <div class="app-container">
   <header>
@@ -101,8 +164,22 @@
     <div class="wallet-badge" id="creatorWallet">Ganancias: $0.00</div>
   </header>
 
+  <!-- TAB 1: FEED Y BUSCADOR -->
   <div id="tab-feed" class="tab-content active">
     
+    <!-- Filtro / Buscador Avanzado de Contenido -->
+    <div class="search-section">
+      <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="🔍 Buscar publicaciones, creadores..." oninput="filterPosts()">
+      </div>
+      <div class="filter-tags">
+        <span class="chip active" onclick="applyTypeFilter('all', this)">Todos</span>
+        <span class="chip" onclick="applyTypeFilter('free', this)">Gratis</span>
+        <span class="chip" onclick="applyTypeFilter('locked', this)">Exclusivo VIP</span>
+        <span class="chip" onclick="applyTypeFilter('collab', this)">🤝 Colaboraciones</span>
+      </div>
+    </div>
+
     <div class="stories-bar">
       <div class="story-item" onclick="document.getElementById('fileStory').click()">
         <div class="story-ring" style="background: var(--card); border: 1px dashed var(--accent);">
@@ -122,8 +199,7 @@
     </div>
 
     <div id="feed-container">
-      
-      <article class="post">
+      <article class="post" data-type="free" data-title="Publicación oficial de arte digital gratis">
         <div class="post-header">
           <div class="user-info">
             <div class="avatar">A</div>
@@ -135,19 +211,46 @@
           <button class="btn-follow" onclick="toggleFan(this, 'fansCount1')">+ Ser Fan</button>
         </div>
         <div class="post-media">
-          <img src="https://picsum.photos/400/300?random=1" id="imgSample1" alt="Contenido">
+          <img src="https://picsum.photos/400/300?random=1" class="filter-natural" alt="Contenido">
           <div class="watermark">⚡ KREATOFANS</div>
         </div>
+        <div style="padding: 10px 12px; font-size:0.85rem;">🔥 Nuevo contenido disponible para todos los seguidores.</div>
         <div class="post-actions">
           <div class="reactions">
             <button class="btn-react" onclick="likePost(this, 'like1')">❤️ <span id="like1">24</span></button>
             <a class="btn-download" href="https://picsum.photos/400/300?random=1" download="KreatoFans_Media.jpg" target="_blank">📥 Descargar</a>
           </div>
-          <button class="btn-gift" onclick="sendGift(5)">🎁 Regalo Fan ($5)</button>
+          <button class="btn-gift" onclick="sendGift('Artista_Oficial', 5)">🎁 Regalo Fan ($5)</button>
         </div>
       </article>
 
-      <article class="post">
+      <article class="post" data-type="collab" data-title="Colaboración especial fotografía y modelo">
+        <div class="post-header">
+          <div class="user-info">
+            <div class="avatar">C</div>
+            <div>
+              <strong>Creadora_VIP <span style="color:var(--accent);">✔</span></strong> 
+              <span class="collab-tag">🤝 Colab con @Artista_Oficial</span>
+              <p style="font-size:0.75rem; color:var(--muted)">Público • Colaboración</p>
+            </div>
+          </div>
+          <button class="btn-follow" onclick="toggleFan(this, 'fansCount2')">+ Ser Fan</button>
+        </div>
+        <div class="post-media">
+          <img src="https://picsum.photos/400/300?random=5" class="filter-warm" alt="Colaboración">
+          <div class="watermark">⚡ KREATOFANS</div>
+        </div>
+        <div style="padding: 10px 12px; font-size:0.85rem;">✨ ¡Sesión especial compartida entre dos creadores!</div>
+        <div class="post-actions">
+          <div class="reactions">
+            <button class="btn-react">💬 Comentar</button>
+            <a class="btn-download" href="https://picsum.photos/400/300?random=5" download="Colab.jpg" target="_blank">📥 Descargar</a>
+          </div>
+          <button class="btn-gift" onclick="sendGift('Creadora_VIP', 10)">🎁 Regalo Fan ($10)</button>
+        </div>
+      </article>
+
+      <article class="post" data-type="locked" data-title="Galería fotos exclusivas para fans de elite">
         <div class="post-header">
           <div class="user-info">
             <div class="avatar">C</div>
@@ -162,7 +265,7 @@
           <div class="locked-overlay" id="paywall2">
             🔒
             <p style="font-weight:bold;">Contenido Exclusivo para Fans</p>
-            <button class="btn-unlock" onclick="unlockContent('mediaLocked2', 'paywall2', 10)">Desbloquear por $10.00</button>
+            <button class="btn-unlock" onclick="unlockContent('mediaLocked2', 'paywall2', 10, 'Creadora_VIP')">Desbloquear por $10.00</button>
           </div>
           <div class="watermark">⚡ KREATOFANS</div>
         </div>
@@ -171,40 +274,70 @@
             <button class="btn-react">💬 Comentar</button>
             <button class="btn-download disabled" title="Descargas deshabilitadas por el creador">🚫 No descargable</button>
           </div>
-          <button class="btn-gift" onclick="sendGift(2)">🎁 Regalo Fan ($2)</button>
+          <button class="btn-gift" onclick="sendGift('Creadora_VIP', 2)">🎁 Regalo Fan ($2)</button>
         </div>
       </article>
-
     </div>
   </div>
 
+  <!-- TAB 2: MIS FANS -->
   <div id="tab-fans" class="tab-content" style="padding: 20px;">
     <h2 style="margin-bottom: 15px;">⭐ Mis Fans Suscritos</h2>
     <div style="display: flex; flex-direction: column; gap: 10px;">
       <div class="chat-item">
-        <div class="avatar">F1</div>
-        <div>
-          <strong>Fan_VIP_1</strong>
-          <p style="font-size:0.8rem; color:var(--accent);">Suscripción Activa ($10/mes)</p>
+        <div class="chat-info">
+          <div class="avatar">F1</div>
+          <div>
+            <strong>Fan_VIP_1</strong>
+            <p style="font-size:0.8rem; color:var(--accent);">Suscripción Activa ($10/mes)</p>
+          </div>
         </div>
       </div>
       <div class="chat-item">
-        <div class="avatar">F2</div>
-        <div>
-          <strong>Súper_Fan_99</strong>
-          <p style="font-size:0.8rem; color:var(--gold);">Regalo enviado: $50.00</p>
+        <div class="chat-info">
+          <div class="avatar">F2</div>
+          <div>
+            <strong>Súper_Fan_99</strong>
+            <p style="font-size:0.8rem; color:var(--gold);">Consumo Total: $50.00</p>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
+  <!-- TAB 3: PUBLICAR / CÁMARA CON FILTROS Y COLABORACIONES -->
   <div id="tab-publish" class="tab-content">
     <form class="publish-form" onsubmit="createNewPost(event)">
       <h2>➕ Crear Nueva Publicación</h2>
-      <label style="font-size: 0.85rem; color: var(--muted);">Selecciona foto o video de tu teléfono:</label>
-      <input type="file" id="postImage" accept="image/*,video/*" required>
+      
+      <label style="font-size: 0.85rem; color: var(--muted);">Selecciona foto o video:</label>
+      <input type="file" id="postImage" accept="image/*,video/*" required onchange="previewMedia(this)">
+
+      <!-- Selección de Filtros -->
+      <label style="font-size: 0.85rem; color: var(--muted);">Aplicar Filtro a la Cámara / Imagen:</label>
+      <select id="mediaFilter" onchange="applyPreviewFilter(this.value)">
+        <option value="filter-none">Sin Filtro</option>
+        <option value="filter-natural">✨ Filtro Natural (Brillo & Piel Suave)</option>
+        <option value="filter-warm">☀️ Cálido / Verano</option>
+        <option value="filter-cool">❄️ Frio / Urbano</option>
+        <option value="filter-bw">🖤 Blanco y Negro Elegante</option>
+      </select>
+
+      <!-- Previsualización -->
+      <div id="previewContainer" style="display:none; width:100%; border-radius:10px; overflow:hidden; border:1px solid #334155;">
+        <img id="imgPreview" style="width:100%; display:block;">
+      </div>
+
       <textarea id="postCaption" placeholder="Escribe una descripción para tus fans..." rows="3" required></textarea>
       
+      <!-- Opción de Colaboración entre Creadores -->
+      <label style="font-size: 0.85rem; color: var(--muted);">🤝 ¿Es una colaboración con otro creador?</label>
+      <select id="collabUser">
+        <option value="">Sin colaboración (Solo yo)</option>
+        <option value="@Artista_Oficial">Colaborar con @Artista_Oficial</option>
+        <option value="@Creadora_VIP">Colaborar con @Creadora_VIP</option>
+      </select>
+
       <label style="font-size: 0.85rem; color: var(--muted);">Acceso al contenido:</label>
       <select id="postAccess">
         <option value="free">Gratis para todos</option>
@@ -221,19 +354,45 @@
     </form>
   </div>
 
+  <!-- TAB 4: CHATS / CLIENTES TOP QUE MÁS CONSUMEN -->
   <div id="tab-chat" class="tab-content" style="padding: 20px;">
-    <h2 style="margin-bottom: 15px;">💬 Mensajes Directos</h2>
-    <div class="chat-item" onclick="alert('Abriendo chat con Fan_VIP_1')">
-      <div class="avatar">F1</div>
-      <div>
-        <strong>Fan_VIP_1</strong>
-        <p style="font-size:0.8rem; color:var(--muted);">¡Hola! Me encantó tu última foto 🔥</p>
+    <h2 style="margin-bottom: 10px;">💬 Mensajes Directos</h2>
+    
+    <!-- Sección de Clientes Top -->
+    <div class="top-fans-panel">
+      <p style="font-size: 0.85rem; font-weight: bold; color: var(--gold); margin-bottom: 8px;">👑 Clientes que Más Consumen en Tu Cuenta:</p>
+      <div id="topFansList" style="font-size: 0.8rem; display: flex; flex-direction: column; gap: 6px;">
+        <!-- Se genera dinámicamente con las compras realizadas -->
+      </div>
+    </div>
+
+    <div id="chatsContainer">
+      <div class="chat-item" onclick="showToast('💬 Chat privado cargado')">
+        <div class="chat-info">
+          <div class="avatar">F2</div>
+          <div>
+            <strong>Súper_Fan_99</strong>
+            <p style="font-size:0.8rem; color:var(--muted);">¡Gracias por el contenido exclusivo!</p>
+          </div>
+        </div>
+        <span class="top-badge">🥇 TOP #1</span>
+      </div>
+
+      <div class="chat-item" onclick="showToast('💬 Chat privado cargado')">
+        <div class="chat-info">
+          <div class="avatar">F1</div>
+          <div>
+            <strong>Fan_VIP_1</strong>
+            <p style="font-size:0.8rem; color:var(--muted);">¡Hola! Me encantó tu foto 🔥</p>
+          </div>
+        </div>
+        <span class="top-badge" style="background:#cbd5e1;">🥈 TOP #2</span>
       </div>
     </div>
   </div>
 
+  <!-- TAB 5: PERFIL -->
   <div id="tab-profile" class="tab-content">
-    
     <div class="profile-cover" id="coverContainer" onclick="document.getElementById('fileCover').click()">
       <img id="coverImg" src="https://picsum.photos/600/200?random=10" alt="Portada">
       <span style="position: absolute; right: 10px; bottom: 10px; background: rgba(0,0,0,0.6); padding: 4px 8px; border-radius: 12px; font-size: 0.7rem;">📷 Cambiar Portada</span>
@@ -259,7 +418,7 @@
       <div style="display: flex; justify-content: space-around; margin-top: 15px; background: var(--card); padding: 12px; border-radius: 12px; border: 1px solid #1e293b;">
         <div><strong>142</strong><p style="font-size:0.75rem; color:var(--muted);">Fans</p></div>
         <div><strong>1.2k</strong><p style="font-size:0.75rem; color:var(--muted);">Me Gusta</p></div>
-        <div><strong id="postCounter">2</strong><p style="font-size:0.75rem; color:var(--muted);">Publicaciones</p></div>
+        <div><strong id="postCounter">3</strong><p style="font-size:0.75rem; color:var(--muted);">Publicaciones</p></div>
       </div>
 
       <button onclick="shareProfile()" style="width: 100%; margin-top: 12px; background: transparent; border: 1px solid var(--accent); color: var(--accent); padding: 8px; border-radius: 20px; font-weight: bold; cursor: pointer;">
@@ -270,7 +429,7 @@
     <h3 style="padding: 0 15px; margin-top: 10px; font-size: 1rem;">📷 Galería</h3>
     <div class="profile-grid" id="profileGrid">
       <div class="profile-grid-item"><img src="https://picsum.photos/400/300?random=1"></div>
-      <div class="profile-grid-item"><img src="https://picsum.photos/400/300?random=8"></div>
+      <div class="profile-grid-item"><img src="https://picsum.photos/400/300?random=5"></div>
     </div>
   </div>
 
@@ -284,9 +443,54 @@
 </div>
 
 <script>
+  // Datos de consumo de Clientes Top (Persistente)
+  let topCustomers = JSON.parse(localStorage.getItem('topCustomers')) || [
+    { name: 'Súper_Fan_99', spent: 50.00 },
+    { name: 'Fan_VIP_1', spent: 10.00 }
+  ];
+
+  let activeTypeFilter = 'all';
+
+  // Lógica de PWA
+  let deferredPrompt;
+  const installBanner = document.getElementById('pwa-install-banner');
+  const installButton = document.getElementById('btnInstallPwa');
+
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    installBanner.style.display = 'flex';
+  });
+
+  installButton.addEventListener('click', () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then(() => {
+        deferredPrompt = null;
+        installBanner.style.display = 'none';
+      });
+    }
+  });
+
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      const splash = document.getElementById('splash-screen');
+      splash.style.opacity = '0';
+      setTimeout(() => splash.style.display = 'none', 500);
+    }, 800);
+    renderTopCustomers();
+  });
+
   let creatorEarnings = parseFloat(localStorage.getItem('earnings') || '0.00');
   let userAvatarUrl = '';
   updateWallet();
+
+  function showToast(message) {
+    const toast = document.getElementById('toast');
+    toast.innerText = message;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 3000);
+  }
 
   function updateWallet() {
     document.getElementById('creatorWallet').innerText = `Ganancias: $${creatorEarnings.toFixed(2)}`;
@@ -301,6 +505,98 @@
     document.getElementById(`btn-tab-${tabName}`).classList.add('active');
   }
 
+  /* SISTEMA DE BÚSQUEDA Y FILTRADO AVANZADO */
+  function applyTypeFilter(type, chipElement) {
+    activeTypeFilter = type;
+    document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+    chipElement.classList.add('active');
+    filterPosts();
+  }
+
+  function filterPosts() {
+    const query = document.getElementById('searchInput').value.toLowerCase();
+    const posts = document.querySelectorAll('#feed-container .post');
+
+    posts.forEach(post => {
+      const type = post.getAttribute('data-type');
+      const text = (post.innerText + " " + (post.getAttribute('data-title') || '')).toLowerCase();
+      
+      const matchesSearch = text.includes(query);
+      const matchesType = (activeTypeFilter === 'all') || (type === activeTypeFilter);
+
+      if (matchesSearch && matchesType) {
+        post.style.display = 'block';
+      } else {
+        post.style.display = 'none';
+      }
+    });
+  }
+
+  /* REGISTRO Y MUESTRA DE CLIENTES TOP */
+  function addTransaction(customerName, amount) {
+    let customer = topCustomers.find(c => c.name === customerName);
+    if (customer) {
+      customer.spent += amount;
+    } else {
+      topCustomers.push({ name: customerName, spent: amount });
+    }
+    topCustomers.sort((a, b) => b.spent - a.spent);
+    localStorage.setItem('topCustomers', JSON.stringify(topCustomers));
+    renderTopCustomers();
+  }
+
+  function renderTopCustomers() {
+    const container = document.getElementById('topFansList');
+    container.innerHTML = '';
+    topCustomers.slice(0, 5).forEach((c, index) => {
+      container.innerHTML += `
+        <div style="display:flex; justify-shadow:space-between; justify-content:space-between; background:var(--card); padding:6px 10px; border-radius:8px;">
+          <span>#${index + 1} <strong>${c.name}</strong></span>
+          <span style="color:var(--gold); font-weight:bold;">$${c.spent.toFixed(2)} consumidos</span>
+        </div>
+      `;
+    });
+  }
+
+  function sendGift(creatorName, amount) {
+    const creatorCut = amount * 0.8;
+    creatorEarnings += creatorCut;
+    updateWallet();
+    addTransaction('Usuario_Actual', amount);
+    showToast(`🎁 ¡Regalo enviado! +$${creatorCut.toFixed(2)} acreditados`);
+  }
+
+  function unlockContent(mediaId, paywallId, price, creatorName) {
+    const creatorCut = price * 0.8;
+    creatorEarnings += creatorCut;
+    updateWallet();
+    addTransaction('Usuario_Actual', price);
+    document.getElementById(paywallId).style.display = 'none';
+    document.getElementById(mediaId).innerHTML = `
+      <img src="https://picsum.photos/400/300?random=8" class="filter-natural" style="width:100%; height:100%; object-fit:cover;">
+      <div class="watermark">⚡ KREATOFANS</div>
+    `;
+    showToast(`🔓 ¡Contenido exclusivo desbloqueado!`);
+  }
+
+  /* PREVISUALIZACIÓN CON FILTROS */
+  function previewMedia(input) {
+    if (input.files && input.files[0]) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const img = document.getElementById('imgPreview');
+        img.src = e.target.result;
+        document.getElementById('previewContainer').style.display = 'block';
+      };
+      reader.readAsDataURL(input.files[0]);
+    }
+  }
+
+  function applyPreviewFilter(filterClass) {
+    const img = document.getElementById('imgPreview');
+    img.className = filterClass;
+  }
+
   function toggleFan(button, counterId) {
     let countElem = document.getElementById(counterId);
     if (!countElem) return;
@@ -309,10 +605,12 @@
       button.classList.remove('following');
       button.innerText = "+ Ser Fan";
       countElem.innerText = count - 1;
+      showToast("Has dejado de seguir a este creador");
     } else {
       button.classList.add('following');
       button.innerText = "✓ Fan";
       countElem.innerText = count + 1;
+      showToast("⭐ ¡Ahora eres Fan oficial!");
     }
   }
 
@@ -320,25 +618,7 @@
     let countElement = document.getElementById(elementId);
     let current = parseInt(countElement.innerText);
     countElement.innerText = current + 1;
-  }
-
-  function sendGift(amount) {
-    const creatorCut = amount * 0.8;
-    creatorEarnings += creatorCut;
-    updateWallet();
-    alert(`¡Regalo enviado!\nSe han acreditado $${creatorCut.toFixed(2)} a tus ganancias.`);
-  }
-
-  function unlockContent(mediaId, paywallId, price) {
-    const creatorCut = price * 0.8;
-    creatorEarnings += creatorCut;
-    updateWallet();
-    document.getElementById(paywallId).style.display = 'none';
-    document.getElementById(mediaId).innerHTML = `
-      <img src="https://picsum.photos/400/300?random=8" style="width:100%; height:100%; object-fit:cover;">
-      <div class="watermark">⚡ KREATOFANS</div>
-    `;
-    alert(`¡Contenido desbloqueado!\nGanancia acreditada: $${creatorCut.toFixed(2)}`);
+    showToast("❤️ ¡Te ha gustado esta publicación!");
   }
 
   function updateImage(input, targetId) {
@@ -346,6 +626,7 @@
       const reader = new FileReader();
       reader.onload = function(e) {
         document.getElementById(targetId).src = e.target.result;
+        showToast("📷 Portada actualizada");
       };
       reader.readAsDataURL(input.files[0]);
     }
@@ -360,6 +641,7 @@
         img.src = userAvatarUrl;
         img.style.display = 'block';
         document.getElementById('avatarLetter').style.display = 'none';
+        showToast("👤 Foto de perfil actualizada");
       };
       reader.readAsDataURL(input.files[0]);
     }
@@ -369,34 +651,33 @@
     const newBio = prompt("Escribe tu biografía:", "✨ Creador oficial de KreatoFans | Contenido exclusivo diario 🔥");
     if (newBio) {
       document.getElementById('bioText').innerText = newBio;
+      showToast("Biografía actualizada");
     }
   }
 
   function shareProfile() {
     if (navigator.share) {
-      navigator.share({
-        title: 'Mi Perfil KreatoFans',
-        url: window.location.href
-      });
+      navigator.share({ title: 'Mi Perfil KreatoFans', url: window.location.href });
     } else {
       navigator.clipboard.writeText(window.location.href);
-      alert("¡Enlace del perfil copiado al portapapeles!");
+      showToast("🔗 ¡Enlace del perfil copiado!");
     }
   }
 
   function addStory(input) {
     if (input.files && input.files[0]) {
-      alert("¡Historia publicada en tu perfil por 24 horas!");
+      showToast("📸 ¡Historia subida con éxito!");
     }
   }
 
-  /* Publicar con permiso de descarga opcional */
   function createNewPost(e) {
     e.preventDefault();
     const fileInput = document.getElementById('postImage');
     const caption = document.getElementById('postCaption').value;
     const access = document.getElementById('postAccess').value;
     const allowDownload = document.getElementById('allowDownload').value;
+    const selectedFilter = document.getElementById('mediaFilter').value;
+    const collabUser = document.getElementById('collabUser').value;
 
     if (fileInput.files && fileInput.files[0]) {
       const file = fileInput.files[0];
@@ -406,8 +687,8 @@
         const isVideo = file.type.startsWith('video/');
         const mediaSrc = evt.target.result;
         const mediaHTML = isVideo 
-          ? `<video src="${mediaSrc}" controls style="width:100%;"></video>`
-          : `<img src="${mediaSrc}" alt="Foto">`;
+          ? `<video src="${mediaSrc}" class="${selectedFilter}" controls style="width:100%;"></video>`
+          : `<img src="${mediaSrc}" class="${selectedFilter}" alt="Foto">`;
 
         const uniqueId = Date.now();
         let contentOverlay = '';
@@ -417,7 +698,7 @@
             <div class="locked-overlay" id="paywall-${uniqueId}">
               🔒
               <p style="font-weight:bold;">Contenido Exclusivo de Fans</p>
-              <button class="btn-unlock" onclick="unlockContent('media-${uniqueId}', 'paywall-${uniqueId}', 5)">Desbloquear por $5.00</button>
+              <button class="btn-unlock" onclick="unlockContent('media-${uniqueId}', 'paywall-${uniqueId}', 5, 'Mi_Perfil')">Desbloquear por $5.00</button>
             </div>
           `;
         }
@@ -426,21 +707,23 @@
           ? `<img src="${userAvatarUrl}">` 
           : 'Mi';
 
-        // Botón de descarga condicional
-        let downloadButtonHTML = '';
-        if (allowDownload === 'yes') {
-          downloadButtonHTML = `<a class="btn-download" href="${mediaSrc}" download="KreatoFans_${uniqueId}.${isVideo ? 'mp4' : 'jpg'}">📥 Descargar</a>`;
-        } else {
-          downloadButtonHTML = `<button class="btn-download disabled" title="Descargas deshabilitadas por el creador">🚫 No descargable</button>`;
-        }
+        const collabMarkup = collabUser 
+          ? `<span class="collab-tag">🤝 Colab con ${collabUser}</span>` 
+          : '';
+
+        let downloadButtonHTML = (allowDownload === 'yes')
+          ? `<a class="btn-download" href="${mediaSrc}" download="KreatoFans_${uniqueId}.${isVideo ? 'mp4' : 'jpg'}">📥 Descargar</a>`
+          : `<button class="btn-download disabled" title="Descargas deshabilitadas por el creador">🚫 No descargable</button>`;
+
+        const postType = collabUser ? 'collab' : (access === 'locked' ? 'locked' : 'free');
 
         const newPostHTML = `
-          <article class="post">
+          <article class="post" data-type="${postType}" data-title="${caption}">
             <div class="post-header">
               <div class="user-info">
                 <div class="avatar">${avatarMarkup}</div>
                 <div>
-                  <strong>Mi_Perfil <span style="color:var(--accent);">✔</span></strong>
+                  <strong>Mi_Perfil <span style="color:var(--accent);">✔</span></strong> ${collabMarkup}
                   <p style="font-size:0.75rem; color:var(--muted)">Ahora mismo • ${access === 'locked' ? 'Exclusivo' : 'Público'}</p>
                 </div>
               </div>
@@ -455,7 +738,7 @@
                 <button class="btn-react" onclick="likePost(this, 'like-${uniqueId}')">❤️ <span id="like-${uniqueId}">0</span></button>
                 ${downloadButtonHTML}
               </div>
-              <button class="btn-gift" onclick="sendGift(2)">🎁 Regalo Fan ($2)</button>
+              <button class="btn-gift" onclick="sendGift('Mi_Perfil', 2)">🎁 Regalo Fan ($2)</button>
             </div>
           </article>
         `;
@@ -463,7 +746,7 @@
         document.getElementById('feed-container').insertAdjacentHTML('afterbegin', newPostHTML);
         
         if (!isVideo && access !== 'locked') {
-          const gridItem = `<div class="profile-grid-item"><img src="${mediaSrc}"></div>`;
+          const gridItem = `<div class="profile-grid-item"><img src="${mediaSrc}" class="${selectedFilter}"></div>`;
           document.getElementById('profileGrid').insertAdjacentHTML('afterbegin', gridItem);
         }
 
@@ -471,8 +754,10 @@
         document.getElementById('postCounter').innerText = postCount + 1;
 
         document.getElementById('postCaption').value = '';
+        document.getElementById('previewContainer').style.display = 'none';
         fileInput.value = '';
         switchTab('feed');
+        showToast("🚀 ¡Publicación creada con éxito!");
       };
       reader.readAsDataURL(file);
     }
