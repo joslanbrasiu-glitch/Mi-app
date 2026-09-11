@@ -3,92 +3,104 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>KreatorSpace App</title>
+  <title>KreatoFans App</title>
   <style>
     :root {
-      --bg: #0f172a;
-      --card: #1e293b;
-      --accent: #8b5cf6;
+      --bg: #0b0f19;          /* Fondo Neón Nocturno */
+      --card: #161f32;        /* Tarjetas de publicaciones */
+      --primary: #8b5cf6;     /* Violeta Eléctrico */
+      --accent: #06b6d4;      /* Cian Neón */
+      --gold: #f59e0b;        /* Dorado para Regalos */
       --text: #f8fafc;
       --muted: #94a3b8;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
     body { background-color: var(--bg); color: var(--text); padding-bottom: 70px; display: flex; justify-content: center; }
-    .app-container { width: 100%; max-width: 480px; min-height: 100vh; background: var(--bg); border-x: 1px solid #334155; }
+    .app-container { width: 100%; max-width: 480px; min-height: 100vh; background: var(--bg); border-x: 1px solid #1e293b; }
     
-    /* Header */
-    header { background: rgba(30, 41, 59, 0.8); backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 10; padding: 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #334155; }
-    header h1 { font-size: 1.2rem; font-weight: 800; color: var(--accent); }
-    .wallet-badge { background: #334155; padding: 6px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: bold; color: #10b981; }
+    /* Header KreatoFans */
+    header { background: rgba(11, 15, 25, 0.85); backdrop-filter: blur(12px); position: sticky; top: 0; z-index: 10; padding: 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1e293b; }
+    .brand-logo { font-size: 1.3rem; font-weight: 900; background: linear-gradient(135deg, var(--primary), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; display: flex; align-items: center; gap: 6px; }
+    .wallet-badge { background: #1e293b; padding: 6px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: bold; color: #10b981; border: 1px solid #334155; }
 
-    /* Feed Post */
-    .post { background: var(--card); margin: 15px; border-radius: 12px; overflow: hidden; border: 1px solid #334155; }
-    .post-header { padding: 12px; display: flex; align-items: center; gap: 10px; }
-    .avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--accent); display: flex; align-items: center; justify-content: center; font-weight: bold; }
-    .post-media { width: 100%; height: 260px; background: #000; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; text-align: center; }
+    /* Post Card */
+    .post { background: var(--card); margin: 15px; border-radius: 16px; overflow: hidden; border: 1px solid #1e293b; box-shadow: 0 4px 20px rgba(0,0,0,0.4); }
+    .post-header { padding: 12px; display: flex; align-items: center; justify-content: space-between; }
+    .user-info { display: flex; align-items: center; gap: 10px; }
+    .avatar { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--accent)); display: flex; align-items: center; justify-content: center; font-weight: bold; color: white; }
+    .btn-follow { background: transparent; color: var(--accent); border: 1px solid var(--accent); padding: 4px 12px; border-radius: 15px; font-size: 0.75rem; font-weight: bold; cursor: pointer; }
+    .btn-follow.following { background: var(--accent); color: #000; }
+
+    .post-media { width: 100%; height: 280px; background: #000; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; text-align: center; }
     .post-media img { width: 100%; height: 100%; object-fit: cover; }
     
-    /* Paywall Overlay */
-    .locked-overlay { position: absolute; inset: 0; background: rgba(15, 23, 42, 0.9); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; padding: 20px; }
-    .btn-unlock { background: var(--accent); color: white; border: none; padding: 10px 20px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: transform 0.2s; }
+    /* Paywall Neón para Fans */
+    .locked-overlay { position: absolute; inset: 0; background: rgba(11, 15, 25, 0.92); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; padding: 20px; backdrop-filter: blur(8px); }
+    .btn-unlock { background: linear-gradient(135deg, var(--primary), var(--accent)); color: white; border: none; padding: 12px 24px; border-radius: 25px; font-weight: bold; cursor: pointer; transition: transform 0.2s; box-shadow: 0 0 15px rgba(139, 92, 246, 0.4); }
     .btn-unlock:active { transform: scale(0.95); }
 
-    /* Actions & Interactions */
-    .post-actions { padding: 12px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #334155; }
-    .reactions { display: flex; gap: 15px; }
-    .btn-react { background: none; border: none; color: var(--text); font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; gap: 4px; }
-    .btn-gift { background: #f59e0b; color: black; border: none; padding: 6px 12px; border-radius: 15px; font-weight: bold; cursor: pointer; font-size: 0.8rem; }
+    /* Acciones */
+    .post-actions { padding: 12px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #1e293b; }
+    .reactions { display: flex; gap: 12px; }
+    .btn-react { background: none; border: none; color: var(--text); font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; gap: 4px; }
+    .btn-gift { background: var(--gold); color: #000; border: none; padding: 6px 14px; border-radius: 20px; font-weight: bold; cursor: pointer; font-size: 0.8rem; box-shadow: 0 0 10px rgba(245, 158, 11, 0.3); }
 
     /* Bottom Nav */
-    nav { position: fixed; bottom: 0; width: 100%; max-width: 480px; background: var(--card); display: flex; justify-content: space-around; padding: 12px 0; border-top: 1px solid #334155; }
+    nav { position: fixed; bottom: 0; width: 100%; max-width: 480px; background: rgba(22, 31, 50, 0.95); backdrop-filter: blur(10px); display: flex; justify-content: space-around; padding: 12px 0; border-top: 1px solid #1e293b; }
     nav button { background: none; border: none; color: var(--muted); font-size: 0.8rem; display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; }
-    nav button.active { color: var(--accent); }
+    nav button.active { color: var(--accent); font-weight: bold; }
   </style>
 </head>
 <body>
 
 <div class="app-container">
-  <!-- Header con Balance del Creador (20% App / 80% Creador) -->
+  <!-- Header KreatoFans -->
   <header>
-    <h1>KreatorSpace</h1>
+    <div class="brand-logo">⚡ KREATOFANS</div>
     <div class="wallet-badge" id="creatorWallet">Ganancias: $0.00</div>
   </header>
 
-  <!-- Publicación 1: Gratuita con interacciones -->
+  <!-- Publicación 1 -->
   <article class="post">
     <div class="post-header">
-      <div class="avatar">A</div>
-      <div>
-        <strong>Artista_Oficial</strong>
-        <p style="font-size:0.75rem; color:var(--muted)">Foto pública</p>
+      <div class="user-info">
+        <div class="avatar">A</div>
+        <div>
+          <strong>Artista_Oficial</strong>
+          <p style="font-size:0.75rem; color:var(--muted)">Público • <span id="fansCount1">128</span> Fans</p>
+        </div>
       </div>
+      <button class="btn-follow" onclick="toggleFan(this, 'fansCount1')">+ Ser Fan</button>
     </div>
     <div class="post-media">
-      <img src="https://picsum.photos/400/300?random=1" alt="Foto">
+      <img src="https://picsum.photos/400/300?random=1" alt="Contenido">
     </div>
     <div class="post-actions">
       <div class="reactions">
-        <button class="btn-react" onclick="likePost(this, 'like1')">❤️ <span id="like1">12</span></button>
-        <button class="btn-react" onclick="likePost(this, 'love1')">🔥 <span id="love1">5</span></button>
+        <button class="btn-react" onclick="likePost(this, 'like1')">❤️ <span id="like1">24</span></button>
+        <button class="btn-react" onclick="likePost(this, 'love1')">🔥 <span id="love1">18</span></button>
       </div>
-      <button class="btn-gift" onclick="sendGift(5)">🎁 Enviar Regalo ($5)</button>
+      <button class="btn-gift" onclick="sendGift(5)">🎁 Regalo Fan ($5)</button>
     </div>
   </article>
 
-  <!-- Publicación 2: Contenido Exclusivo con Paywall Simulando Pago -->
+  <!-- Publicación 2: Exclusivo KreatoFans -->
   <article class="post">
     <div class="post-header">
-      <div class="avatar">C</div>
-      <div>
-        <strong>Creadora_Premium</strong>
-        <p style="font-size:0.75rem; color:var(--muted)">Contenido Exclusivo</p>
+      <div class="user-info">
+        <div class="avatar">C</div>
+        <div>
+          <strong>Creadora_Premium</strong>
+          <p style="font-size:0.75rem; color:var(--muted)">Exclusivo Fans • $10.00</p>
+        </div>
       </div>
+      <button class="btn-follow" onclick="toggleFan(this, 'fansCount2')">+ Ser Fan</button>
     </div>
     <div class="post-media" id="mediaLocked">
       <div class="locked-overlay" id="paywall">
         🔒
-        <p style="font-weight:bold;">Contenido Exclusivo a la Carta</p>
-        <p style="font-size:0.8rem; color:var(--muted);">Desbloquea para ver este video</p>
+        <p style="font-weight:bold;">Contenido Exclusivo de Fans</p>
+        <p style="font-size:0.8rem; color:var(--muted);">Suscripción VIP para ver este contenido</p>
         <button class="btn-unlock" onclick="unlockContent(10)">Desbloquear por $10.00</button>
       </div>
     </div>
@@ -96,21 +108,20 @@
       <div class="reactions">
         <button class="btn-react">💬 Comentar</button>
       </div>
-      <button class="btn-gift" onclick="sendGift(2)">🎁 Regalo ($2)</button>
+      <button class="btn-gift" onclick="sendGift(2)">🎁 Regalo Fan ($2)</button>
     </div>
   </article>
 
-  <!-- Navegación Inferior -->
+  <!-- Navegación -->
   <nav>
-    <button class="active">🏠<span>Inicio</span></button>
-    <button>🎥<span>Live</span></button>
+    <button class="active">🏠<span>Feed</span></button>
+    <button>⭐<span>Mis Fans</span></button>
     <button>➕<span>Publicar</span></button>
     <button>👤<span>Perfil</span></button>
   </nav>
 </div>
 
 <script>
-  // Estado local para simular ganancias sin costo de servidor
   let creatorEarnings = parseFloat(localStorage.getItem('earnings') || '0.00');
   updateWallet();
 
@@ -119,7 +130,23 @@
     localStorage.setItem('earnings', creatorEarnings);
   }
 
-  // Simulación de interacción (Me Gusta / Me Encanta)
+  // Función para volverse Fan
+  function toggleFan(button, counterId) {
+    let countElem = document.getElementById(counterId);
+    if (!countElem) return;
+    let count = parseInt(countElem.innerText);
+
+    if (button.classList.contains('following')) {
+      button.classList.remove('following');
+      button.innerText = "+ Ser Fan";
+      countElem.innerText = count - 1;
+    } else {
+      button.classList.add('following');
+      button.innerText = "✓ Fan";
+      countElem.innerText = count + 1;
+    }
+  }
+
   function likePost(button, elementId) {
     let countElement = document.getElementById(elementId);
     let current = parseInt(countElement.innerText);
@@ -128,29 +155,23 @@
     setTimeout(() => button.style.transform = "scale(1)", 150);
   }
 
-  // Simulación de Regalo Virtual (Calcula Split: 80% creador / 20% app)
   function sendGift(amount) {
-    const creatorCut = amount * 0.80; // 80% directo al creador
-    const appCut = amount * 0.20;     // 20% retenido por la plataforma
+    const creatorCut = amount * 0.80; 
+    const appCut = amount * 0.20;     
     creatorEarnings += creatorCut;
     updateWallet();
-    alert(`¡Enviaste un regalo de $${amount}! \n\nDistribution:\n• Creador recibe: $${creatorCut.toFixed(2)}\n• Comisión App (20%): $${appCut.toFixed(2)}`);
+    alert(`¡Regalo enviado!\n\n• Creador recibe: $${creatorCut.toFixed(2)}\n• Comisión KreatoFans (20%): $${appCut.toFixed(2)}`);
   }
 
-  // Simulación de Desbloqueo de Contenido Exclusivo
   function unlockContent(price) {
     const creatorCut = price * 0.80;
     creatorEarnings += creatorCut;
     updateWallet();
     
-    // Quitar Paywall y mostrar contenido
-    const paywall = document.getElementById('paywall');
-    paywall.style.display = 'none';
+    document.getElementById('paywall').style.display = 'none';
+    document.getElementById('mediaLocked').innerHTML = `<img src="https://picsum.photos/400/300?random=2" style="width:100%; height:100%; object-fit:cover;">`;
     
-    const mediaContainer = document.getElementById('mediaLocked');
-    mediaContainer.innerHTML = `<img src="https://picsum.photos/400/300?random=2" style="width:100%; height:100%; object-fit:cover;">`;
-    
-    alert(`¡Contenido desbloqueado exitosamente!\nSe han acreditado $${creatorCut.toFixed(2)} al creador.`);
+    alert(`¡Contenido desbloqueado!\nSe acreditan $${creatorCut.toFixed(2)} al creador.`);
   }
 </script>
 
