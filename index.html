@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KreatorSpace App</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card: #1e293b;
+      --accent: #8b5cf6;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
+    body { background-color: var(--bg); color: var(--text); padding-bottom: 70px; display: flex; justify-content: center; }
+    .app-container { width: 100%; max-width: 480px; min-height: 100vh; background: var(--bg); border-x: 1px solid #334155; }
+    
+    /* Header */
+    header { background: rgba(30, 41, 59, 0.8); backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 10; padding: 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #334155; }
+    header h1 { font-size: 1.2rem; font-weight: 800; color: var(--accent); }
+    .wallet-badge { background: #334155; padding: 6px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: bold; color: #10b981; }
+
+    /* Feed Post */
+    .post { background: var(--card); margin: 15px; border-radius: 12px; overflow: hidden; border: 1px solid #334155; }
+    .post-header { padding: 12px; display: flex; align-items: center; gap: 10px; }
+    .avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--accent); display: flex; align-items: center; justify-content: center; font-weight: bold; }
+    .post-media { width: 100%; height: 260px; background: #000; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; text-align: center; }
+    .post-media img { width: 100%; height: 100%; object-fit: cover; }
+    
+    /* Paywall Overlay */
+    .locked-overlay { position: absolute; inset: 0; background: rgba(15, 23, 42, 0.9); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; padding: 20px; }
+    .btn-unlock { background: var(--accent); color: white; border: none; padding: 10px 20px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: transform 0.2s; }
+    .btn-unlock:active { transform: scale(0.95); }
+
+    /* Actions & Interactions */
+    .post-actions { padding: 12px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #334155; }
+    .reactions { display: flex; gap: 15px; }
+    .btn-react { background: none; border: none; color: var(--text); font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; gap: 4px; }
+    .btn-gift { background: #f59e0b; color: black; border: none; padding: 6px 12px; border-radius: 15px; font-weight: bold; cursor: pointer; font-size: 0.8rem; }
+
+    /* Bottom Nav */
+    nav { position: fixed; bottom: 0; width: 100%; max-width: 480px; background: var(--card); display: flex; justify-content: space-around; padding: 12px 0; border-top: 1px solid #334155; }
+    nav button { background: none; border: none; color: var(--muted); font-size: 0.8rem; display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; }
+    nav button.active { color: var(--accent); }
+  </style>
+</head>
+<body>
+
+<div class="app-container">
+  <!-- Header con Balance del Creador (20% App / 80% Creador) -->
+  <header>
+    <h1>KreatorSpace</h1>
+    <div class="wallet-badge" id="creatorWallet">Ganancias: $0.00</div>
+  </header>
+
+  <!-- Publicación 1: Gratuita con interacciones -->
+  <article class="post">
+    <div class="post-header">
+      <div class="avatar">A</div>
+      <div>
+        <strong>Artista_Oficial</strong>
+        <p style="font-size:0.75rem; color:var(--muted)">Foto pública</p>
+      </div>
+    </div>
+    <div class="post-media">
+      <img src="https://picsum.photos/400/300?random=1" alt="Foto">
+    </div>
+    <div class="post-actions">
+      <div class="reactions">
+        <button class="btn-react" onclick="likePost(this, 'like1')">❤️ <span id="like1">12</span></button>
+        <button class="btn-react" onclick="likePost(this, 'love1')">🔥 <span id="love1">5</span></button>
+      </div>
+      <button class="btn-gift" onclick="sendGift(5)">🎁 Enviar Regalo ($5)</button>
+    </div>
+  </article>
+
+  <!-- Publicación 2: Contenido Exclusivo con Paywall Simulando Pago -->
+  <article class="post">
+    <div class="post-header">
+      <div class="avatar">C</div>
+      <div>
+        <strong>Creadora_Premium</strong>
+        <p style="font-size:0.75rem; color:var(--muted)">Contenido Exclusivo</p>
+      </div>
+    </div>
+    <div class="post-media" id="mediaLocked">
+      <div class="locked-overlay" id="paywall">
+        🔒
+        <p style="font-weight:bold;">Contenido Exclusivo a la Carta</p>
+        <p style="font-size:0.8rem; color:var(--muted);">Desbloquea para ver este video</p>
+        <button class="btn-unlock" onclick="unlockContent(10)">Desbloquear por $10.00</button>
+      </div>
+    </div>
+    <div class="post-actions">
+      <div class="reactions">
+        <button class="btn-react">💬 Comentar</button>
+      </div>
+      <button class="btn-gift" onclick="sendGift(2)">🎁 Regalo ($2)</button>
+    </div>
+  </article>
+
+  <!-- Navegación Inferior -->
+  <nav>
+    <button class="active">🏠<span>Inicio</span></button>
+    <button>🎥<span>Live</span></button>
+    <button>➕<span>Publicar</span></button>
+    <button>👤<span>Perfil</span></button>
+  </nav>
+</div>
+
+<script>
+  // Estado local para simular ganancias sin costo de servidor
+  let creatorEarnings = parseFloat(localStorage.getItem('earnings') || '0.00');
+  updateWallet();
+
+  function updateWallet() {
+    document.getElementById('creatorWallet').innerText = `Ganancias: $${creatorEarnings.toFixed(2)}`;
+    localStorage.setItem('earnings', creatorEarnings);
+  }
+
+  // Simulación de interacción (Me Gusta / Me Encanta)
+  function likePost(button, elementId) {
+    let countElement = document.getElementById(elementId);
+    let current = parseInt(countElement.innerText);
+    countElement.innerText = current + 1;
+    button.style.transform = "scale(1.2)";
+    setTimeout(() => button.style.transform = "scale(1)", 150);
+  }
+
+  // Simulación de Regalo Virtual (Calcula Split: 80% creador / 20% app)
+  function sendGift(amount) {
+    const creatorCut = amount * 0.80; // 80% directo al creador
+    const appCut = amount * 0.20;     // 20% retenido por la plataforma
+    creatorEarnings += creatorCut;
+    updateWallet();
+    alert(`¡Enviaste un regalo de $${amount}! \n\nDistribution:\n• Creador recibe: $${creatorCut.toFixed(2)}\n• Comisión App (20%): $${appCut.toFixed(2)}`);
+  }
+
+  // Simulación de Desbloqueo de Contenido Exclusivo
+  function unlockContent(price) {
+    const creatorCut = price * 0.80;
+    creatorEarnings += creatorCut;
+    updateWallet();
+    
+    // Quitar Paywall y mostrar contenido
+    const paywall = document.getElementById('paywall');
+    paywall.style.display = 'none';
+    
+    const mediaContainer = document.getElementById('mediaLocked');
+    mediaContainer.innerHTML = `<img src="https://picsum.photos/400/300?random=2" style="width:100%; height:100%; object-fit:cover;">`;
+    
+    alert(`¡Contenido desbloqueado exitosamente!\nSe han acreditado $${creatorCut.toFixed(2)} al creador.`);
+  }
+</script>
+
+</body>
+</html>
