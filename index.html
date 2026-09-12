@@ -2,284 +2,284 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>KreatoFans</title>
-  <meta name="application-name" content="KreatoFans">
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="theme-color" content="#0b0f19">
-  <link rel="icon" type="image/svg+xml" href="">
-  <link rel="apple-touch-icon" href="">
-  <style>
-    :root {
-      --bg: #0b0f19;
-      --card: #161b28;
-      --primary: #94a3b8;
-      --accent: #06b6d4;
-      --gold: #f9e0eb;
-      --text: #f8fafc;
-      --muted: #94a3b8;
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { background-color: var(--bg); color: var(--text); font-family: sans-serif; overflow-x: hidden; }
-    .app-container { width: 100%; max-width: 480px; margin: 0 auto; padding-bottom: 70px; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kreatofans</title>
+    <meta name="application-name" content="Kreatofans">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#0b0f19">
+    <link rel="icon" type="image/svg+xml" href="">
+    <link rel="apple-touch-icon" href="">
+    <style>
+        :root {
+            --bg: #0b0f19;
+            --card: #161b28;
+            --primary: #94a3b8;
+            --accent: #06b6d4;
+            --gold: #f9e0eb;
+            --text: #f8fafc;
+            --muted: #94a3b8;
+        }
 
-    /* Pantalla de Carga / Splash Screen */
-    #splash-screen {
-      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: var(--bg); display: flex; flex-direction: column;
-      align-items: center; justify-content: center; z-index: 9999;
-      transition: opacity 0.5s ease;
-    }
-    .splash-logo {
-      font-size: 2rem; font-weight: bold; color: var(--accent);
-      animation: pulseLogo 1.5s infinite alternate;
-    }
-    @keyframes pulseLogo {
-      0% { transform: scale(1); opacity: 0.8; }
-      100% { transform: scale(1.1); opacity: 1; text-shadow: 0 0 15px rgba(6, 182, 212, 0.6); }
-    }
-    
-    /* Insignias de Categorías */
-    .badge-famoso { background: linear-gradient(135deg, #f59e0b, #ef4444); color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: bold; display: inline-block; margin-top: 5px; }
-    .badge-popular { background: linear-gradient(135deg, #8b5cf6, #ec4899); color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: bold; display: inline-block; margin-top: 5px; }
-    .badge-principiante { background: linear-gradient(135deg, #3b82f6, #06b6d4); color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: bold; display: inline-block; margin-top: 5px; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
+        .app-container { width: 100%; max-width: 480px; min-height: 100vh; background: var(--bg); display: flex; flex-direction: column; position: relative; padding-bottom: 70px; }
 
-    /* Contenedor multimedia con Marca de Agua integrada */
-    .media-watermark-container {
-      position: relative;
-      width: 100%;
-      border-radius: 8px;
-      overflow: hidden;
-      background: #000;
-    }
-    .watermark-overlay {
-      position: absolute;
-      bottom: 12px;
-      right: 12px;
-      background: rgba(0, 0, 0, 0.6);
-      color: #fff;
-      padding: 4px 10px;
-      font-size: 0.7rem;
-      font-weight: bold;
-      border-radius: 4px;
-      pointer-events: none;
-      letter-spacing: 1px;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-    }
+        /* Pantalla de Carga / Splash Screen con logo animado */
+        #splash-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg); display: flex; flex-direction: column;
+            align-items: center; justify-content: center; z-index: 9999;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+        .splash-logo {
+            font-size: 2.2rem; font-weight: bold; color: var(--accent);
+            animation: logoBounceAndGlow 1.8s infinite alternate ease-in-out;
+        }
+        @keyframes logoBounceAndGlow {
+            0% { transform: scale(1); filter: drop-shadow(0 0 2px rgba(6,182,212,0.4)); }
+            100% { transform: scale(1.08); filter: drop-shadow(0 0 15px rgba(6,182,212,0.9)); }
+        }
 
-    /* Tienda del Creador */
-    .store-section { padding: 15px; margin-top: 10px; }
-    .store-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
-    .store-item { background: var(--card); border-radius: 10px; padding: 10px; text-align: center; }
+        /* Insignias de Categorías / Fases */
+        .badge-famoso { background: linear-gradient(135deg, #f59e0b, #d97706); color: #fff; padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: bold; }
+        .badge-popular { background: linear-gradient(135deg, #38bdf8, #2563eb); color: #fff; padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: bold; }
+        .badge-principiante { background: linear-gradient(135deg, #94a3b8, #475569); color: #fff; padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: bold; }
 
-    /* Estilos generales */
-    header { padding: 15px; display: flex; justify-content: space-between; align-items: center; background: rgba(11,15,25,0.9); position: sticky; top: 0; z-index: 50; }
-    .profile-header { text-align: center; padding: 20px 0; }
-    .profile-stats { display: flex; justify-content: space-around; padding: 15px 0; background: var(--card); border-radius: 12px; margin: 10px; text-align: center; }
-    
-    nav { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--card); display: flex; justify-content: space-around; padding: 12px 0; border-top: 1px solid rgba(255,255,255,0.1); z-index: 100; }
-    nav a { color: var(--muted); text-decoration: none; font-size: 0.8rem; text-align: center; }
-    nav a.active { color: var(--accent); }
-    .tab-content { display: none; }
-    .tab-content.active { display: block; }
-  </style>
+        /* Contenedor multimedia con Marca de Agua dinámica del perfil */
+        .media-watermark-container { position: relative; width: 100%; border-radius: 8px; overflow: hidden; background: #000; margin-top: 10px; }
+        .watermark-overlay {
+            position: absolute; bottom: 12px; right: 12px;
+            background: rgba(0, 0, 0, 0.65); color: #fff;
+            padding: 5px 10px; font-size: 0.75rem; font-weight: bold;
+            border-radius: 4px; pointer-events: none; letter-spacing: 0.5px;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(2px);
+        }
+
+        /* Tienda y Productos */
+        .store-section { padding: 15px; margin-top: 10px; background: var(--card); border-radius: 12px; }
+        .store-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 10px; }
+        .store-item { background: var(--bg); padding: 12px; border-radius: 8px; text-align: center; border: 1px solid rgba(255,255,255,0.05); }
+
+        /* Estilos generales y Navegación */
+        header { padding: 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .profile-header { text-align: center; padding: 20px 0; }
+        .profile-stats { display: flex; justify-content: space-around; padding: 15px 0; background: var(--card); border-radius: 10px; margin: 10px 15px; }
+
+        nav { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--card); display: flex; justify-content: space-around; padding: 12px 0; border-top: 1px solid rgba(255,255,255,0.05); z-index: 1000; }
+        nav a { color: var(--muted); text-decoration: none; font-size: 1.2rem; }
+        nav a.active { color: var(--accent); }
+        .tab-content { display: none; padding: 15px; }
+        .tab-content.active { display: block; }
+    </style>
 </head>
 <body>
 
-  <!-- Animación de Inicio -->
-  <div id="splash-screen">
-    <div class="splash-logo">⚡ KREATOFANS</div>
-    <p style="color: var(--muted); font-size: 0.85rem; margin-top: 10px;">Cargando tu experiencia...</p>
-  </div>
-
-  <div class="app-container">
-    <!-- Header -->
-    <header>
-      <h1 style="color: var(--accent); font-size: 1.2rem;">KreatoFans</h1>
-      <span style="background: var(--card); padding: 5px 10px; border-radius: 20px; font-size: 0.85rem;">Ganancias: $0.00</span>
-    </header>
-
-    <!-- PESTAÑA 1: FEED -->
-    <div id="tab-feed" class="tab-content active" style="padding: 15px;">
-      <h3 style="font-size: 1rem; margin-bottom: 10px;">Feed Principal</h3>
-      <p style="color: var(--muted); font-size: 0.9rem;">Explora las publicaciones de la comunidad aquí.</p>
+    <div id="splash-screen">
+        <div class="splash-logo">KREATOFANS</div>
+        <p style="color: var(--muted); font-size: 0.85rem; margin-top: 12px;">Cargando tu comunidad...</p>
     </div>
 
-    <!-- PESTAÑA 2: FANS -->
-    <div id="tab-fans" class="tab-content" style="padding: 15px;">
-      <h3 style="font-size: 1rem; margin-bottom: 10px;">Comunidad de Fans</h3>
-      <p style="color: var(--muted); font-size: 0.9rem;">Tus seguidores y conexiones cercanas.</p>
+    <div class="app-container">
+        <header>
+            <h1 style="color: var(--accent); font-size: 1.3rem;">Kreatofans</h1>
+            <span style="background: var(--card); padding: 5px 10px; border-radius: 20px; font-size: 0.8rem;" id="userCountry">Detectando país...</span>
+        </header>
+
+        <div id="tab-feed" class="tab-content active">
+            <h3 style="font-size: 1rem; margin-bottom: 10px;">Publicaciones</h3>
+            <p style="color: var(--muted); font-size: 0.9rem;">Explora contenido protegido de creadores.</p>
+        </div>
+
+        <div id="tab-communities" class="tab-content">
+            <h3 style="font-size: 1rem; margin-bottom: 10px;">Comunidades y Grupos</h3>
+            <p style="color: var(--muted); font-size: 0.85rem; margin-bottom: 15px;">Crea o únete a espacios exclusivos con otros usuarios.</p>
+            
+            <div style="background: var(--card); padding: 15px; border-radius: 12px; margin-bottom: 15px;">
+                <input type="text" id="communityNameInput" placeholder="Nombre de la comunidad..." style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); background: var(--bg); color: var(--text); margin-bottom: 10px;">
+                <button onclick="createNewCommunity()" style="background: var(--accent); color: #000; border: none; padding: 10px; border-radius: 6px; font-weight: bold; width: 100%; cursor: pointer;">Crear Comunidad</button>
+            </div>
+
+            <div id="communitiesList" style="display: flex; flex-direction: column; gap: 10px;">
+                <div style="background: var(--card); padding: 12px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <h4 style="font-size: 0.95rem;">🌟 Creadores Estelares</h4>
+                        <p style="font-size: 0.75rem; color: var(--muted);">Comunidad oficial general</p>
+                    </div>
+                    <span style="font-size: 0.75rem; color: var(--accent); background: rgba(6,182,212,0.1); padding: 4px 8px; border-radius: 4px;">Unido</span>
+                </div>
+            </div>
+        </div>
+
+        <div id="tab-publish" class="tab-content">
+            <h3 style="font-size: 1rem; margin-bottom: 10px;">Publicar Contenido</h3>
+            <p style="color: var(--muted); font-size: 0.85rem; margin-bottom: 15px;">Sube fotos o videos; llevarán tu nombre de perfil como marca de agua.</p>
+            
+            <div style="background: var(--card); padding: 15px; border-radius: 12px; text-align: center;">
+                <input type="file" id="mediaInput" accept="image/*,video/*" style="margin-bottom: 15px; width: 100%; color: var(--text);" onchange="previewMedia(event)">
+                
+                <div id="mediaPreviewContainer" style="display:none;" class="media-watermark-container">
+                    <div id="previewElementWrapper" style="width:100%; min-height: 200px; display:flex; align-items:center; justify-content:center;"></div>
+                    <div class="watermark-overlay" id="dynamicWatermarkText">@MiPerfilCreador</div>
+                </div>
+
+                <button onclick="alert('¡Publicación subida con éxito y marca de agua aplicada!')" style="margin-top: 15px; background: var(--accent); color: #000; border: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; width: 100%;">Compartir Publicación</button>
+            </div>
+        </div>
+
+        <div id="tab-chat" class="tab-content">
+            <h3 style="font-size: 1rem; margin-bottom: 10px;">Mensajes</h3>
+            <p style="color: var(--muted); font-size: 0.9rem;">Comunícate de forma directa.</p>
+        </div>
+
+        <div id="tab-profile" class="tab-content">
+            <div class="profile-header">
+                <div style="width: 80px; height: 80px; background: var(--card); border-radius: 50%; margin: 0 auto 10px auto; display: flex; align-items: center; justify-content: center; font-size: 1.8rem;">👑</div>
+                <h2 id="profileNameTitle" style="font-size: 1.2rem;">Mi Perfil Creador</h2>
+                <div style="margin-top: 8px;">
+                    <span id="creatorBadge" class="badge-principiante">Cargando fase...</span>
+                </div>
+                <p style="color: var(--muted); font-size: 0.8rem; margin-top: 6px;">📍 <span id="userDistance">Ubicando...</span></p>
+            </div>
+
+            <div class="profile-stats">
+                <div style="text-align: center;">
+                    <strong id="fansCount" style="font-size: 1rem;">0</strong>
+                    <p style="font-size: 0.7rem; color: var(--muted);">Fans</p>
+                </div>
+                <div style="text-align: center;">
+                    <strong id="likesCount" style="font-size: 1rem;">0</strong>
+                    <p style="font-size: 0.7rem; color: var(--muted);">Vistas</p>
+                </div>
+                <div style="text-align: center;">
+                    <strong id="postsCount" style="font-size: 1rem;">0</strong>
+                    <p style="font-size: 0.7rem; color: var(--muted);">Posts</p>
+                </div>
+            </div>
+
+            <div class="store-section">
+                <h3 style="font-size: 0.95rem;">🛍️ Tienda y Servicios</h3>
+                <div class="store-grid">
+                    <div class="store-item">
+                        <p style="font-size: 0.8rem; font-weight: bold;">Videos Exclusivos</p>
+                    </div>
+                    <div class="store-item">
+                        <p style="font-size: 0.8rem; font-weight: bold;">Suscripciones</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <nav>
+            <a href="#" onclick="switchTab('feed', event)" id="nav-feed" class="active">🏠</a>
+            <a href="#" onclick="switchTab('communities', event)" id="nav-communities">👥</a>
+            <a href="#" onclick="switchTab('publish', event)" id="nav-publish">➕</a>
+            <a href="#" onclick="switchTab('chat', event)" id="nav-chat">💬</a>
+            <a href="#" onclick="switchTab('profile', event)" id="nav-profile">👤</a>
+        </nav>
     </div>
 
-    <!-- PESTAÑA 3: PUBLICAR (Con cámara y marca de agua automática) -->
-    <div id="tab-publish" class="tab-content" style="padding: 15px;">
-      <h3 style="font-size: 1rem; margin-bottom: 10px;">Crear Nueva Publicación</h3>
-      <p style="color: var(--muted); font-size: 0.85rem; margin-bottom: 15px;">Sube contenido o usa tu cámara. Se aplicará la marca de agua protegida.</p>
-      
-      <div style="background: var(--card); padding: 15px; border-radius: 12px; text-align: center;">
-        <input type="file" id="mediaInput" accept="image/*,video/*" capture="environment" style="display: none;" onchange="previewMedia(event)">
-        <button onclick="document.getElementById('mediaInput').click()" style="background: var(--accent); color: #000; border: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: pointer;">📸 Abrir Cámara / Archivos</button>
-        
-        <!-- Vista previa con marca de agua -->
-        <div id="mediaPreviewContainer" style="margin-top: 15px; display: none;">
-          <div class="media-watermark-container">
-            <div id="previewElementWrapper"></div>
-            <div class="watermark-overlay">© KREATOFANS</div>
-          </div>
-          <button onclick="alert('Publicación lista con marca de agua')" style="margin-top: 10px; background: #10b981; color: white; border: none; padding: 8px 15px; border-radius: 6px; width: 100%; font-weight: bold;">Publicar con Protección</button>
-        </div>
-      </div>
-    </div>
+    <script>
+        const profileName = "MiPerfilCreador"; // Puedes cambiar o enlazar esto dinámicamente
 
-    <!-- PESTAÑA 4: CHAT -->
-    <div id="tab-chat" class="tab-content" style="padding: 15px;">
-      <h3 style="font-size: 1rem; margin-bottom: 10px;">Mensajes</h3>
-      <p style="color: var(--muted); font-size: 0.9rem;">Tus conversaciones directas.</p>
-    </div>
+        window.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                const splash = document.getElementById('splash-screen');
+                if(splash) {
+                    splash.style.opacity = '0';
+                    setTimeout(() => splash.remove(), 500);
+                }
+            }, 1200);
+            initAppFeatures();
+        });
 
-    <!-- PESTAÑA 5: PERFIL -->
-    <div id="tab-profile" class="tab-content" style="padding: 15px;">
-      <div class="profile-header">
-        <div style="width: 90px; height: 90px; background: linear-gradient(135deg, #06b6d4, #3b82f6); border-radius: 50%; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; font-weight: bold;">Mi</div>
-        <h2>Mi Perfil Creador <span style="color: var(--accent);">✓</span></h2>
-        
-        <div>
-          <span class="badge-principiante" id="userBadge">Principiante</span>
-        </div>
-
-        <p style="color: var(--muted); font-size: 0.85rem; margin-top: 8px;">
-          📍 <span id="userCountry">Detectando país...</span> | 🌐 <span id="userDistance">Calculando cercanía...</span>
-        </p>
-
-        <p style="color: var(--muted); font-size: 0.9rem; margin-top: 8px;">✨ Toca aquí para escribir tu biografía...</p>
-      </div>
-
-      <div class="profile-stats">
-        <div>
-          <strong id="fansCount">0</strong>
-          <p style="font-size: 0.75rem; color: var(--muted);">Fans</p>
-        </div>
-        <div>
-          <strong id="likesCount">0</strong>
-          <p style="font-size: 0.75rem; color: var(--muted);">Me Gusta</p>
-        </div>
-        <div>
-          <strong id="postsCount">0</strong>
-          <p style="font-size: 0.75rem; color: var(--muted);">Publicaciones</p>
-        </div>
-      </div>
-
-      <!-- Tienda de Creador -->
-      <div class="store-section">
-        <h3 style="font-size: 1rem; color: var(--text); display: flex; justify-content: space-between; align-items: center;">
-          🛍️ Tienda y Productos
-          <span style="font-size: 0.75rem; color: var(--accent); cursor: pointer;" onclick="alert('Apartado listo para vender música, videos, fotos o servicios')">+ Vender</span>
-        </h3>
-        <div class="store-grid">
-          <div class="store-item">
-            <div style="background:#0b0f19; height:80px; display:flex; align-items:center; justify-content:center; border-radius:6px; color:var(--muted); font-size:0.75rem;">Sin artículos</div>
-            <p style="font-size: 0.75rem; margin-top: 6px;">Sube tus servicios o arte</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Barra de Navegación -->
-  <nav>
-    <a href="#" onclick="switchTab('feed')" id="nav-feed" class="active">Feed</a>
-    <a href="#" onclick="switchTab('fans')" id="nav-fans">Fans</a>
-    <a href="#" onclick="switchTab('publish')" id="nav-publish">Publicar</a>
-    <a href="#" onclick="switchTab('chat')" id="nav-chat">Chat</a>
-    <a href="#" onclick="switchTab('profile')" id="nav-profile">Perfil</a>
-  </nav>
-
-  <!-- Scripts -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script>
-    const SUPABASE_URL = 'https://gnsumthypyzbxt.supabase.co';
-    const SUPABASE_ANON_KEY = 'EPZkOcvcDAGHaYWO';
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-    // Quitar Splash Screen al cargar
-    window.addEventListener('DOMContentLoaded', () => {
-      setTimeout(() => {
-        const splash = document.getElementById('splash-screen');
-        splash.style.opacity = '0';
-        setTimeout(() => splash.remove(), 500);
-      }, 1200);
-
-      initAppFeatures();
-    });
-
-    // Control de pestañas
-    function switchTab(tabName) {
-      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-      document.querySelectorAll('nav a').forEach(el => el.classList.remove('active'));
-      
-      document.getElementById('tab-' + tabName).classList.add('active');
-      document.getElementById('nav-' + tabName).classList.add('active');
-    }
-
-    // Vista previa con Marca de Agua automática para la cámara/archivos
-    function previewMedia(event) {
-      const file = event.target.files[0];
-      if (!file) return;
-
-      const container = document.getElementById('mediaPreviewContainer');
-      const wrapper = document.getElementById('previewElementWrapper');
-      wrapper.innerHTML = '';
-
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        if (file.type.startsWith('image/')) {
-          wrapper.innerHTML = `<img src="${e.target.result}" style="width: 100%; max-height: 250px; object-fit: cover; display: block;">`;
-        } else if (file.type.startsWith('video/')) {
-          wrapper.innerHTML = `<video src="${e.target.result}" controls style="width: 100%; max-height: 250px; object-fit: cover; display: block;"></video>`;
+        function switchTab(tabName, event) {
+            if(event) event.preventDefault();
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('nav a').forEach(el => el.classList.remove('active'));
+            
+            const targetTab = document.getElementById('tab-' + tabName);
+            const targetNav = document.getElementById('nav-' + tabName);
+            
+            if(targetTab) targetTab.classList.add('active');
+            if(targetNav) targetNav.classList.add('active');
         }
-        container.style.display = 'block';
-      }
-      reader.readAsDataURL(file);
-    }
 
-    // Inicializar funciones de país, distancia y niveles
-    async function initAppFeatures() {
-      try {
-        const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-        const countryPart = timezone.split('/')[1] || 'Global';
-        document.getElementById('userCountry').innerText = countryPart.replace('_', ' ');
-      } catch (e) {
-        document.getElementById('userCountry').innerText = 'Global';
-      }
+        function previewMedia(event) {
+            const file = event.target.files[0];
+            if (!file) return;
 
-      document.getElementById('userDistance').innerText = "Cerca de ti";
+            const container = document.getElementById('mediaPreviewContainer');
+            const wrapper = document.getElementById('previewElementWrapper');
+            const watermarkLabel = document.getElementById('dynamicWatermarkText');
+            
+            // Asignar el nombre de perfil actual a la marca de agua en fotos/videos
+            watermarkLabel.innerText = "@" + profileName;
 
-      try {
-        const { count, error } = await supabase
-          .from('posts')
-          .select('*', { count: 'exact', head: true });
-
-        if (!error && count !== null) {
-          document.getElementById('postsCount').innerText = count;
-          
-          const badgeEl = document.getElementById('userBadge');
-          if (count >= 20) {
-            badgeEl.className = 'badge-famoso';
-            badgeEl.innerText = '⭐ Famoso';
-          } else if (count >= 5) {
-            badgeEl.className = 'badge-popular';
-            badgeEl.innerText = '🔥 Popular';
-          } else {
-            badgeEl.className = 'badge-principiante';
-            badgeEl.innerText = '🌱 Principiante';
-          }
+            wrapper.innerHTML = '';
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                if (file.type.startsWith('image/')) {
+                    wrapper.innerHTML = `<img src="${e.target.result}" style="max-width:100%; max-height:250px; border-radius:6px; object-fit:contain;">`;
+                } else if (file.type.startsWith('video/')) {
+                    wrapper.innerHTML = `<video src="${e.target.result}" controls style="max-width:100%; max-height:250px; border-radius:6px;"></video>`;
+                }
+                container.style.display = 'block';
+            }
+            reader.readAsDataURL(file);
         }
-      } catch (err) {
-        console.error("Error sincronizando datos:", err);
-      }
-    }
-  </script>
+
+        // Función para crear nuevas comunidades o grupos de usuarios
+        function createNewCommunity() {
+            const input = document.getElementById('communityNameInput');
+            const name = input.value.trim();
+            if(!name) {
+                alert('Por favor escribe un nombre para la comunidad.');
+                return;
+            }
+
+            const list = document.getElementById('communitiesList');
+            const newCard = document.createElement('div');
+            newCard.style.cssText = "background: var(--card); padding: 12px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;";
+            newCard.innerHTML = `
+                <div>
+                    <h4 style="font-size: 0.95rem;">👥 ${name}</h4>
+                    <p style="font-size: 0.75rem; color: var(--muted);">Creado por ti</p>
+                </div>
+                <span style="font-size: 0.75rem; color: var(--accent); background: rgba(6,182,212,0.1); padding: 4px 8px; border-radius: 4px;">Administrador</span>
+            `;
+            list.prepend(newCard);
+            input.value = '';
+            alert('¡Comunidad creada con éxito!');
+        }
+
+        function initAppFeatures() {
+            try {
+                const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+                const countryPart = timezone ? timezone.split('/')[1] || 'Local' : 'Global';
+                document.getElementById('userCountry').innerText = countryPart;
+                document.getElementById('userDistance').innerText = 'Cerca de ti (' + countryPart + ')';
+            } catch (e) {
+                document.getElementById('userCountry').innerText = 'Global';
+            }
+
+            const mockPostsCount = 6;
+            document.getElementById('postsCount').innerText = mockPostsCount;
+            const badgeEl = document.getElementById('creatorBadge');
+            
+            if (mockPostsCount >= 20) {
+                badgeEl.className = 'badge-famoso';
+                badgeEl.innerText = '🔥 Famoso';
+            } else if (mockPostsCount >= 5) {
+                badgeEl.className = 'badge-popular';
+                badgeEl.innerText = '⭐ Popular';
+            } else {
+                badgeEl.className = 'badge-principiante';
+                badgeEl.innerText = '🌱 Principiante';
+            }
+        }
+    </script>
 </body>
 </html>
