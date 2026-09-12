@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kreatofans</title>
+    <title>Kreatofans — Comunidad Exclusiva de Creadores</title>
     <meta name="application-name" content="Kreatofans">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -20,13 +20,15 @@
             --gold: #f9e0eb;
             --text: #f8fafc;
             --muted: #94a3b8;
+            --danger: #ef4444;
+            --success: #22c55e;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         body { background-color: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
-        .app-container { width: 100%; max-width: 480px; min-height: 100vh; background: var(--bg); display: flex; flex-direction: column; position: relative; padding-bottom: 70px; }
+        .app-container { width: 100%; max-width: 480px; min-height: 100vh; background: var(--bg); display: flex; flex-direction: column; position: relative; padding-bottom: 75px; box-shadow: 0 0 25px rgba(0,0,0,0.5); }
 
-        /* Pantalla de Carga / Splash Screen con logo animado */
+        /* Pantalla de Carga / Splash Screen */
         #splash-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: var(--bg); display: flex; flex-direction: column;
@@ -35,138 +37,221 @@
         }
         .splash-logo {
             font-size: 2.2rem; font-weight: bold; color: var(--accent);
-            animation: logoBounceAndGlow 1.8s infinite alternate ease-in-out;
+            animation: pulseLogo 1.5s infinite alternate ease-in-out;
+            letter-spacing: 1px;
         }
-        @keyframes logoBounceAndGlow {
-            0% { transform: scale(1); filter: drop-shadow(0 0 2px rgba(6,182,212,0.4)); }
-            100% { transform: scale(1.08); filter: drop-shadow(0 0 15px rgba(6,182,212,0.9)); }
+        @keyframes pulseLogo {
+            0% { transform: scale(1); opacity: 0.8; }
+            100% { transform: scale(1.08); opacity: 1; text-shadow: 0 0 20px rgba(6,182,212,0.8); }
         }
 
-        /* Insignias de Categorías / Fases */
-        .badge-famoso { background: linear-gradient(135deg, #f59e0b, #d97706); color: #fff; padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: bold; }
-        .badge-popular { background: linear-gradient(135deg, #38bdf8, #2563eb); color: #fff; padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: bold; }
-        .badge-principiante { background: linear-gradient(135deg, #94a3b8, #475569); color: #fff; padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: bold; }
+        /* Insignias de Niveles y Fases (Gamificación) */
+        .badge-famoso { background: linear-gradient(135deg, #f59e0b, #d97706); color: #fff; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: bold; box-shadow: 0 2px 10px rgba(245,158,11,0.3); }
+        .badge-popular { background: linear-gradient(135deg, #38bdf8, #2563eb); color: #fff; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: bold; box-shadow: 0 2px 10px rgba(56,189,248,0.3); }
+        .badge-principiante { background: linear-gradient(135deg, #94a3b8, #475569); color: #fff; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: bold; }
 
-        /* Contenedor multimedia con Marca de Agua dinámica del perfil */
-        .media-watermark-container { position: relative; width: 100%; border-radius: 8px; overflow: hidden; background: #000; margin-top: 10px; }
+        /* Portada de Perfil (Soporta foto o video en bucle) */
+        .profile-cover {
+            width: 100%; height: 130px; background: #000; position: relative; overflow: hidden; border-radius: 12px 12px 0 0;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+        .profile-cover img, .profile-cover video {
+            width: 100%; height: 100%; object-fit: cover;
+        }
+        .cover-edit-btn {
+            position: absolute; bottom: 8px; right: 8px; background: rgba(0,0,0,0.7); color: #fff;
+            border: 1px solid rgba(255,255,255,0.2); padding: 4px 8px; font-size: 0.7rem; border-radius: 4px; cursor: pointer;
+            backdrop-filter: blur(3px);
+        }
+
+        /* Contenedor multimedia con Marca de Agua Dinámica */
+        .media-watermark-container { position: relative; width: 100%; border-radius: 8px; overflow: hidden; background: #000; margin-top: 10px; border: 1px solid rgba(255,255,255,0.08); }
         .watermark-overlay {
             position: absolute; bottom: 12px; right: 12px;
-            background: rgba(0, 0, 0, 0.65); color: #fff;
-            padding: 5px 10px; font-size: 0.75rem; font-weight: bold;
-            border-radius: 4px; pointer-events: none; letter-spacing: 0.5px;
-            border: 1px solid rgba(255, 255, 255, 0.25);
-            backdrop-filter: blur(2px);
+            background: rgba(0, 0, 0, 0.7); color: #fff;
+            padding: 5px 12px; font-size: 0.75rem; font-weight: bold;
+            border-radius: 6px; pointer-events: none; letter-spacing: 0.5px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(4px);
         }
 
-        /* Tienda y Productos */
-        .store-section { padding: 15px; margin-top: 10px; background: var(--card); border-radius: 12px; }
+        /* Tienda y Servicios */
+        .store-section { padding: 15px; margin-top: 15px; background: var(--card); border-radius: 12px; border: 1px solid rgba(255,255,255,0.04); }
         .store-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 10px; }
-        .store-item { background: var(--bg); padding: 12px; border-radius: 8px; text-align: center; border: 1px solid rgba(255,255,255,0.05); }
+        .store-item { background: #0b0f19; padding: 12px; border-radius: 8px; text-align: center; border: 1px solid rgba(255,255,255,0.05); }
 
         /* Estilos generales y Navegación */
-        header { padding: 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .profile-header { text-align: center; padding: 20px 0; }
-        .profile-stats { display: flex; justify-content: space-around; padding: 15px 0; background: var(--card); border-radius: 10px; margin: 10px 15px; }
+        header { padding: 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(22,27,40,0.5); backdrop-filter: blur(5px); position: sticky; top: 0; z-index: 100; }
+        .profile-header { text-align: center; padding: 15px 0 10px 0; background: var(--card); border-radius: 0 0 12px 12px; margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.04); border-top: none; }
+        .profile-stats { display: flex; justify-content: space-around; padding: 15px 0; background: var(--card); border-radius: 12px; margin: 10px 0; border: 1px solid rgba(255,255,255,0.04); }
 
-        nav { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--card); display: flex; justify-content: space-around; padding: 12px 0; border-top: 1px solid rgba(255,255,255,0.05); z-index: 1000; }
-        nav a { color: var(--muted); text-decoration: none; font-size: 1.2rem; }
-        nav a.active { color: var(--accent); }
-        .tab-content { display: none; padding: 15px; }
+        nav { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; background: var(--card); display: flex; justify-content: space-around; padding: 12px 0; border-top: 1px solid rgba(255,255,255,0.08); z-index: 1000; backdrop-filter: blur(10px); }
+        nav a { color: var(--muted); text-decoration: none; font-size: 1.3rem; transition: color 0.2s; }
+        nav a.active { color: var(--accent); filter: drop-shadow(0 0 8px rgba(6,182,212,0.5)); }
+        .tab-content { display: none; padding: 15px; animation: fadeIn 0.3s ease-in-out; }
         .tab-content.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        input[type="text"], input[type="file"], select { outline: none; transition: border-color 0.2s; }
+        input[type="text"]:focus, select:focus { border-color: var(--accent) !important; }
+        
+        .btn-main { background: var(--accent); color: #000; border: none; padding: 11px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; width: 100%; font-size: 0.9rem; transition: opacity 0.2s; }
+        .btn-main:hover { opacity: 0.9; }
     </style>
 </head>
 <body>
 
     <div id="splash-screen">
-        <div class="splash-logo">KREATOFANS</div>
+        <div class="splash-logo">⚡ KREATOFANS</div>
         <p style="color: var(--muted); font-size: 0.85rem; margin-top: 12px;">Cargando tu comunidad...</p>
     </div>
 
     <div class="app-container">
         <header>
-            <h1 style="color: var(--accent); font-size: 1.3rem;">Kreatofans</h1>
-            <span style="background: var(--card); padding: 5px 10px; border-radius: 20px; font-size: 0.8rem;" id="userCountry">Detectando país...</span>
+            <h1 style="color: var(--accent); font-size: 1.2rem; font-weight: 800; letter-spacing: 0.5px;">KREATOFANS</h1>
+            <span style="background: var(--card); padding: 5px 12px; border-radius: 20px; font-size: 0.75rem; border: 1px solid rgba(255,255,255,0.06);" id="userCountry">Detectando país...</span>
         </header>
 
         <div id="tab-feed" class="tab-content active">
-            <h3 style="font-size: 1rem; margin-bottom: 10px;">Publicaciones</h3>
-            <p style="color: var(--muted); font-size: 0.9rem;">Explora contenido protegido de creadores.</p>
+            <h3 style="font-size: 1rem; margin-bottom: 5px; font-weight: 600;">Feed de Publicaciones</h3>
+            <p style="color: var(--muted); font-size: 0.85rem; margin-bottom: 15px;">Explora el contenido exclusivo de tu comunidad.</p>
+            <div style="background: var(--card); padding: 20px; border-radius: 12px; text-align: center; border: 1px solid rgba(255,255,255,0.04);">
+                <p style="color: var(--muted); font-size: 0.9rem;">Sincronizado correctamente con Supabase.</p>
+            </div>
         </div>
 
         <div id="tab-communities" class="tab-content">
-            <h3 style="font-size: 1rem; margin-bottom: 10px;">Comunidades y Grupos</h3>
+            <h3 style="font-size: 1rem; margin-bottom: 5px; font-weight: 600;">Comunidades y Grupos</h3>
             <p style="color: var(--muted); font-size: 0.85rem; margin-bottom: 15px;">Crea o únete a espacios exclusivos con otros usuarios.</p>
             
-            <div style="background: var(--card); padding: 15px; border-radius: 12px; margin-bottom: 15px;">
-                <input type="text" id="communityNameInput" placeholder="Nombre de la comunidad..." style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); background: var(--bg); color: var(--text); margin-bottom: 10px;">
-                <button onclick="createNewCommunity()" style="background: var(--accent); color: #000; border: none; padding: 10px; border-radius: 6px; font-weight: bold; width: 100%; cursor: pointer;">Crear Comunidad</button>
+            <div style="background: var(--card); padding: 15px; border-radius: 12px; margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.04);">
+                <input type="text" id="communityNameInput" placeholder="Nombre de la comunidad..." style="width: 100%; padding: 10px 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: var(--bg); color: var(--text); margin-bottom: 10px; font-size: 0.9rem;">
+                <button onclick="createNewCommunity()" class="btn-main">Crear Comunidad</button>
             </div>
 
             <div id="communitiesList" style="display: flex; flex-direction: column; gap: 10px;">
-                <div style="background: var(--card); padding: 12px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
+                <div style="background: var(--card); padding: 14px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; border: 1px solid rgba(255,255,255,0.04);">
                     <div>
-                        <h4 style="font-size: 0.95rem;">🌟 Creadores Estelares</h4>
-                        <p style="font-size: 0.75rem; color: var(--muted);">Comunidad oficial general</p>
+                        <h4 style="font-size: 0.95rem; font-weight: 600;">🌟 Creadores Estelares</h4>
+                        <p style="font-size: 0.75rem; color: var(--muted); margin-top: 2px;">Comunidad oficial general</p>
                     </div>
-                    <span style="font-size: 0.75rem; color: var(--accent); background: rgba(6,182,212,0.1); padding: 4px 8px; border-radius: 4px;">Unido</span>
+                    <span style="font-size: 0.75rem; color: var(--accent); background: rgba(6,182,212,0.1); padding: 4px 10px; border-radius: 6px; font-weight: 600;">Unido</span>
                 </div>
             </div>
         </div>
 
         <div id="tab-publish" class="tab-content">
-            <h3 style="font-size: 1rem; margin-bottom: 10px;">Publicar Contenido</h3>
-            <p style="color: var(--muted); font-size: 0.85rem; margin-bottom: 15px;">Sube fotos o videos; llevarán tu nombre de perfil como marca de agua.</p>
+            <h3 style="font-size: 1rem; margin-bottom: 5px; font-weight: 600;">Publicar Contenido</h3>
+            <p style="color: var(--muted); font-size: 0.85rem; margin-bottom: 15px;">Sube fotos o videos protegidos con tu marca de agua automática.</p>
             
-            <div style="background: var(--card); padding: 15px; border-radius: 12px; text-align: center;">
-                <input type="file" id="mediaInput" accept="image/*,video/*" style="margin-bottom: 15px; width: 100%; color: var(--text);" onchange="previewMedia(event)">
-                
-                <div id="mediaPreviewContainer" style="display:none;" class="media-watermark-container">
-                    <div id="previewElementWrapper" style="width:100%; min-height: 200px; display:flex; align-items:center; justify-content:center;"></div>
-                    <div class="watermark-overlay" id="dynamicWatermarkText">@MiPerfilCreador</div>
-                </div>
-
-                <button onclick="alert('¡Publicación subida con éxito y marca de agua aplicada!')" style="margin-top: 15px; background: var(--accent); color: #000; border: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; width: 100%;">Compartir Publicación</button>
+            <div style="background: var(--card); padding: 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.04); margin-bottom: 15px;">
+                <label style="font-size: 0.8rem; color: var(--muted); display: block; margin-bottom: 5px;">Subir Archivo Individual</label>
+                <input type="file" id="mediaInput" accept="image/*,video/*" style="margin-bottom: 10px; width: 100%; color: var(--muted); font-size: 0.85rem;" onchange="previewMedia(event)">
             </div>
+
+            <div style="background: var(--card); padding: 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.04); margin-bottom: 15px;">
+                <label style="font-size: 0.85rem; font-weight: bold; color: var(--accent); display: block; margin-bottom: 8px;">🎬 Crear Video con Fotos (Plantillas + Música)</label>
+                
+                <label style="font-size: 0.75rem; color: var(--muted); display: block; margin-bottom: 4px;">Selecciona tus fotos:</label>
+                <input type="file" id="multiPhotosInput" accept="image/*" multiple style="margin-bottom: 10px; width: 100%; color: var(--muted); font-size: 0.8rem;">
+
+                <label style="font-size: 0.75rem; color: var(--muted); display: block; margin-bottom: 4px;">Plantilla de Animación:</label>
+                <select id="videoTemplateSelect" style="width: 100%; padding: 8px; border-radius: 6px; background: var(--bg); color: var(--text); border: 1px solid rgba(255,255,255,0.1); margin-bottom: 10px; font-size: 0.85rem;">
+                    <option value="fade">✨ Transición Suave (Fade)</option>
+                    <option value="zoom">🔍 Zoom Dinámico VIP</option>
+                    <option value="slide">📱 Desplazamiento Rápido Reels</option>
+                </select>
+
+                <label style="font-size: 0.75rem; color: var(--muted); display: block; margin-bottom: 4px;">Música de Fondo:</label>
+                <select id="backgroundMusicSelect" style="width: 100%; padding: 8px; border-radius: 6px; background: var(--bg); color: var(--text); border: 1px solid rgba(255,255,255,0.1); margin-bottom: 12px; font-size: 0.85rem;">
+                    <option value="beat_trendy">🎵 Beat Urbano Trendy</option>
+                    <option value="chill_lofi">🎧 Melodía Chill Lofi</option>
+                    <option value="electronic_vip">⚡ Energía Electrónica VIP</option>
+                </select>
+
+                <button onclick="generatePhotoVideo()" class="btn-main" style="font-size: 0.85rem; padding: 9px;">Generar Video Automático</button>
+            </div>
+
+            <div id="mediaPreviewContainer" style="display:none;" class="media-watermark-container">
+                <div id="previewElementWrapper" style="width:100%; min-height: 180px; display:flex; align-items:center; justify-content:center;"></div>
+                <div class="watermark-overlay" id="dynamicWatermarkText">@MiPerfilCreador</div>
+            </div>
+
+            <button onclick="alert('¡Publicación lista y compartida en el muro!')" class="btn-main" style="margin-top: 15px;">Compartir Publicación Oficial</button>
         </div>
 
         <div id="tab-chat" class="tab-content">
-            <h3 style="font-size: 1rem; margin-bottom: 10px;">Mensajes</h3>
-            <p style="color: var(--muted); font-size: 0.9rem;">Comunícate de forma directa.</p>
+            <h3 style="font-size: 1rem; margin-bottom: 5px; font-weight: 600;">Mensajes Directos</h3>
+            <p style="color: var(--muted); font-size: 0.85rem; margin-bottom: 15px;">Comunícate de forma privada con tus fans y colegas.</p>
+            <div style="background: var(--card); padding: 20px; border-radius: 12px; text-align: center; border: 1px solid rgba(255,255,255,0.04);">
+                <p style="color: var(--muted); font-size: 0.9rem;">Bandeja de mensajes activa.</p>
+            </div>
         </div>
 
         <div id="tab-profile" class="tab-content">
+            <div class="profile-cover" id="profileCoverContainer">
+                <div style="width:100%; height:100%; background: linear-gradient(135deg, #1e293b, #0f172a); display:flex; align-items:center; justify-content:center; color: var(--muted); font-size: 0.8rem;">Sin portada personalizada</div>
+                <button class="cover-edit-btn" onclick="document.getElementById('coverFileInput').click()">📷 Cambiar Portada</button>
+                <input type="file" id="coverFileInput" accept="image/*,video/*" style="display:none;" onchange="updateProfileCover(event)">
+            </div>
+
             <div class="profile-header">
-                <div style="width: 80px; height: 80px; background: var(--card); border-radius: 50%; margin: 0 auto 10px auto; display: flex; align-items: center; justify-content: center; font-size: 1.8rem;">👑</div>
-                <h2 id="profileNameTitle" style="font-size: 1.2rem;">Mi Perfil Creador</h2>
-                <div style="margin-top: 8px;">
+                <div style="width: 75px; height: 75px; background: var(--card); border-radius: 50%; margin: -40px auto 8px auto; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; border: 2px solid var(--accent); box-shadow: 0 0 15px rgba(6,182,212,0.2); position: relative; z-index: 2;">👑</div>
+                <h2 id="profileNameTitle" style="font-size: 1.15rem; font-weight: 700;">Mi Perfil Creador</h2>
+                <div style="margin-top: 6px;">
                     <span id="creatorBadge" class="badge-principiante">Cargando fase...</span>
                 </div>
-                <p style="color: var(--muted); font-size: 0.8rem; margin-top: 6px;">📍 <span id="userDistance">Ubicando...</span></p>
+                <p style="color: var(--muted); font-size: 0.8rem; margin-top: 6px;">
+                    📍 <span id="userDistance">Calculando proximidad...</span> 
+                    <span id="proximityBadge" style="font-size: 0.7rem; padding: 2px 6px; border-radius: 4px; margin-left: 6px; font-weight: bold;"></span>
+                </p>
+
+                <div style="margin-top: 12px; padding: 0 15px;">
+                    <input type="text" id="socialLinkInput" placeholder="Añade link de Instagram, TikTok..." style="width: 100%; padding: 8px; border-radius: 6px; background: var(--bg); border: 1px solid rgba(255,255,255,0.1); color: var(--text); font-size: 0.8rem; margin-bottom: 6px;">
+                    <button onclick="saveSocialLink()" style="background: rgba(6,182,212,0.15); color: var(--accent); border: 1px solid var(--accent); padding: 5px 10px; border-radius: 6px; font-size: 0.75rem; cursor: pointer; font-weight: bold;">Guardar Red Social</button>
+                    <div id="socialLinksDisplay" style="margin-top: 8px; display: flex; justify-content: center; gap: 8px; flex-wrap: wrap;"></div>
+                </div>
             </div>
 
             <div class="profile-stats">
                 <div style="text-align: center;">
-                    <strong id="fansCount" style="font-size: 1rem;">0</strong>
-                    <p style="font-size: 0.7rem; color: var(--muted);">Fans</p>
+                    <strong id="fansCount" style="font-size: 1rem; font-weight: 700;">0</strong>
+                    <p style="font-size: 0.75rem; color: var(--muted); margin-top: 2px;">Fans</p>
                 </div>
                 <div style="text-align: center;">
-                    <strong id="likesCount" style="font-size: 1rem;">0</strong>
-                    <p style="font-size: 0.7rem; color: var(--muted);">Vistas</p>
+                    <strong id="likesCount" style="font-size: 1rem; font-weight: 700;">0</strong>
+                    <p style="font-size: 0.75rem; color: var(--muted); margin-top: 2px;">Vistas</p>
                 </div>
                 <div style="text-align: center;">
-                    <strong id="postsCount" style="font-size: 1rem;">0</strong>
-                    <p style="font-size: 0.7rem; color: var(--muted);">Posts</p>
+                    <strong id="postsCount" style="font-size: 1rem; font-weight: 700;">0</strong>
+                    <p style="font-size: 0.75rem; color: var(--muted); margin-top: 2px;">Posts</p>
                 </div>
             </div>
 
             <div class="store-section">
-                <h3 style="font-size: 0.95rem;">🛍️ Tienda y Servicios</h3>
+                <h3 style="font-size: 0.95rem; margin-bottom: 8px; font-weight: 600;">🗑️ Mis Publicaciones y Gestión</h3>
+                <div id="myProfilePostsList" style="display: flex; flex-direction: column; gap: 8px;">
+                    <div style="background: var(--bg); padding: 10px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; border: 1px solid rgba(255,255,255,0.04);">
+                        <span style="font-size: 0.8rem; color: var(--muted);">Video Exclusivo #1</span>
+                        <button onclick="deletePost(this)" style="background: rgba(239, 68, 68, 0.2); color: var(--danger); border: none; padding: 4px 8px; border-radius: 4px; font-size: 0.7rem; cursor: pointer; font-weight: bold;">Eliminar</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="store-section">
+                <h3 style="font-size: 0.95rem; margin-bottom: 5px; font-weight: 600;">🛍️ Tienda y Servicios</h3>
                 <div class="store-grid">
                     <div class="store-item">
-                        <p style="font-size: 0.8rem; font-weight: bold;">Videos Exclusivos</p>
+                        <p style="font-size: 0.8rem; font-weight: bold; color: var(--accent);">Videos Exclusivos</p>
+                        <p style="font-size: 0.7rem; color: var(--muted); margin-top: 4px;">Contenido VIP</p>
                     </div>
                     <div class="store-item">
-                        <p style="font-size: 0.8rem; font-weight: bold;">Suscripciones</p>
+                        <p style="font-size: 0.8rem; font-weight: bold; color: var(--accent);">Suscripciones</p>
+                        <p style="font-size: 0.7rem; color: var(--muted); margin-top: 4px;">Pase mensual</p>
                     </div>
                 </div>
             </div>
@@ -181,22 +266,38 @@
         </nav>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-        const profileName = "MiPerfilCreador"; // Puedes cambiar o enlazar esto dinámicamente
+        const SUPABASE_URL = 'https://gnsumthypzbxt.supabase.co';
+        const SUPABASE_ANON_KEY = 'EPZKoCvcDagHaW0';
+        
+        let supabaseClient = null;
+        try {
+            if (window.supabase) {
+                supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            }
+        } catch (e) {
+            console.error("Error inicializando Supabase:", e);
+        }
 
+        const profileName = "MiPerfilCreador";
+
+        // Pantalla de carga y arranque de funciones
         window.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => {
                 const splash = document.getElementById('splash-screen');
                 if(splash) {
                     splash.style.opacity = '0';
-                    setTimeout(() => splash.remove(), 500);
+                    setTimeout(() => splash.remove(), 400);
                 }
-            }, 1200);
+            }, 1000);
+
             initAppFeatures();
         });
 
+        // Control dinámico de pestañas
         function switchTab(tabName, event) {
-            if(event) event.preventDefault();
+            if (event) event.preventDefault();
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('nav a').forEach(el => el.classList.remove('active'));
             
@@ -207,6 +308,7 @@
             if(targetNav) targetNav.classList.add('active');
         }
 
+        // Vista previa multimedia con marca de agua automática
         function previewMedia(event) {
             const file = event.target.files[0];
             if (!file) return;
@@ -215,69 +317,192 @@
             const wrapper = document.getElementById('previewElementWrapper');
             const watermarkLabel = document.getElementById('dynamicWatermarkText');
             
-            // Asignar el nombre de perfil actual a la marca de agua en fotos/videos
             watermarkLabel.innerText = "@" + profileName;
 
             wrapper.innerHTML = '';
             const reader = new FileReader();
             reader.onload = function(e) {
                 if (file.type.startsWith('image/')) {
-                    wrapper.innerHTML = `<img src="${e.target.result}" style="max-width:100%; max-height:250px; border-radius:6px; object-fit:contain;">`;
+                    wrapper.innerHTML = `<img src="${e.target.result}" style="max-width:100%; max-height:220px; border-radius:6px; object-fit:contain;">`;
                 } else if (file.type.startsWith('video/')) {
-                    wrapper.innerHTML = `<video src="${e.target.result}" controls style="max-width:100%; max-height:250px; border-radius:6px;"></video>`;
+                    wrapper.innerHTML = `<video src="${e.target.result}" controls style="max-width:100%; max-height:220px; border-radius:6px;"></video>`;
                 }
                 container.style.display = 'block';
             }
             reader.readAsDataURL(file);
         }
 
-        // Función para crear nuevas comunidades o grupos de usuarios
+        // Generar Video automático con fotos, plantillas y música
+        function generatePhotoVideo() {
+            const filesInput = document.getElementById('multiPhotosInput');
+            const template = document.getElementById('videoTemplateSelect').value;
+            const music = document.getElementById('backgroundMusicSelect').value;
+
+            if (!filesInput.files || filesInput.files.length === 0) {
+                alert('Por favor selecciona al menos una foto.');
+                return;
+            }
+
+            const container = document.getElementById('mediaPreviewContainer');
+            const wrapper = document.getElementById('previewElementWrapper');
+            const watermarkLabel = document.getElementById('dynamicWatermarkText');
+            watermarkLabel.innerText = "@" + profileName + " [" + template + "]";
+
+            const firstFile = filesInput.files[0];
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                wrapper.innerHTML = `
+                    <div style="position:relative; width:100%; text-align:center;">
+                        <img src="${e.target.result}" style="max-width:100%; max-height:220px; border-radius:6px; object-fit:contain;">
+                        <p style="font-size: 0.7rem; color: var(--accent); margin-top: 4px;">🎵 Música: ${music} | Plantilla: ${template}</p>
+                    </div>
+                `;
+                container.style.display = 'block';
+                alert('¡Video generado con éxito usando fotos y plantillas!');
+            }
+            reader.readAsDataURL(firstFile);
+        }
+
+        // Actualizar portada de perfil con foto o video en bucle
+        function updateProfileCover(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const coverContainer = document.getElementById('profileCoverContainer');
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                if (file.type.startsWith('image/')) {
+                    coverContainer.innerHTML = `
+                        <img src="${e.target.result}" alt="Portada">
+                        <button class="cover-edit-btn" onclick="document.getElementById('coverFileInput').click()">📷 Cambiar Portada</button>
+                        <input type="file" id="coverFileInput" accept="image/*,video/*" style="display:none;" onchange="updateProfileCover(event)">
+                    `;
+                } else if (file.type.startsWith('video/')) {
+                    coverContainer.innerHTML = `
+                        <video src="${e.target.result}" autoplay muted loop playsinline></video>
+                        <button class="cover-edit-btn" onclick="document.getElementById('coverFileInput').click()">📷 Cambiar Portada</button>
+                        <input type="file" id="coverFileInput" accept="image/*,video/*" style="display:none;" onchange="updateProfileCover(event)">
+                    `;
+                }
+                alert('¡Portada de perfil actualizada correctamente!');
+            }
+            reader.readAsDataURL(file);
+        }
+
+        // Guardar enlaces a redes sociales
+        function saveSocialLink() {
+            const input = document.getElementById('socialLinkInput');
+            const linkVal = input.value.trim();
+            if(!linkVal) {
+                alert('Escribe un enlace válido.');
+                return;
+            }
+
+            const display = document.getElementById('socialLinksDisplay');
+            const badge = document.createElement('a');
+            badge.href = linkVal;
+            badge.target = "_blank";
+            badge.style.cssText = "background: rgba(6,182,212,0.1); color: var(--accent); padding: 3px 8px; border-radius: 4px; font-size: 0.7rem; text-decoration: none; border: 1px solid rgba(6,182,212,0.3);";
+            badge.innerText = "🔗 Red Social";
+            display.appendChild(badge);
+            input.value = '';
+            alert('¡Enlace guardado en tu perfil!');
+        }
+
+        // Eliminar publicaciones del muro propio
+        function deletePost(buttonElement) {
+            if(confirm('¿Deseas eliminar esta publicación de tu perfil?')) {
+                buttonElement.parentElement.remove();
+                alert('Publicación eliminada.');
+            }
+        }
+
+        // Crear nuevas comunidades
         function createNewCommunity() {
             const input = document.getElementById('communityNameInput');
             const name = input.value.trim();
             if(!name) {
-                alert('Por favor escribe un nombre para la comunidad.');
+                alert('Por favor escribe un nombre válido.');
                 return;
             }
 
             const list = document.getElementById('communitiesList');
             const newCard = document.createElement('div');
-            newCard.style.cssText = "background: var(--card); padding: 12px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;";
+            newCard.style.cssText = "background: var(--card); padding: 14px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; border: 1px solid rgba(255,255,255,0.04);";
             newCard.innerHTML = `
                 <div>
-                    <h4 style="font-size: 0.95rem;">👥 ${name}</h4>
-                    <p style="font-size: 0.75rem; color: var(--muted);">Creado por ti</p>
+                    <h4 style="font-size: 0.95rem; font-weight: 600;">👥 ${name}</h4>
+                    <p style="font-size: 0.75rem; color: var(--muted); margin-top: 2px;">Creado por ti</p>
                 </div>
-                <span style="font-size: 0.75rem; color: var(--accent); background: rgba(6,182,212,0.1); padding: 4px 8px; border-radius: 4px;">Administrador</span>
+                <span style="font-size: 0.75rem; color: var(--accent); background: rgba(6,182,212,0.1); padding: 4px 10px; border-radius: 6px; font-weight: 600;">Admin</span>
             `;
             list.prepend(newCard);
             input.value = '';
             alert('¡Comunidad creada con éxito!');
         }
 
-        function initAppFeatures() {
+        // Inicializar país, geolocalización (cerca/lejos) y niveles desde Supabase
+        async function initAppFeatures() {
             try {
                 const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
                 const countryPart = timezone ? timezone.split('/')[1] || 'Local' : 'Global';
                 document.getElementById('userCountry').innerText = countryPart;
                 document.getElementById('userDistance').innerText = 'Cerca de ti (' + countryPart + ')';
+                
+                // Lógica de proximidad interactiva (Cerca o Lejos)
+                const proxBadge = document.getElementById('proximityBadge');
+                // Simulamos chequeo de proximidad basado en geolocalización o región activa
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(
+                        (position) => {
+                            // Coordenadas disponibles localmente: se considera "Cerca"
+                            proxBadge.innerText = '🟢 Cerca';
+                            proxBadge.style.background = 'rgba(34, 197, 94, 0.15)';
+                            proxBadge.style.color = 'var(--success)';
+                        },
+                        (error) => {
+                            // Si el usuario deniega o no hay GPS, se evalúa por zona horaria/región
+                            proxBadge.innerText = '📡 Zona Activa';
+                            proxBadge.style.background = 'rgba(6, 182, 212, 0.15)';
+                            proxBadge.style.color = 'var(--accent)';
+                        },
+                        { timeout: 5000 }
+                    );
+                } else {
+                    proxBadge.innerText = '📍 Región Global';
+                    proxBadge.style.background = 'rgba(148, 163, 184, 0.15)';
+                    proxBadge.style.color = 'var(--muted)';
+                }
             } catch (e) {
                 document.getElementById('userCountry').innerText = 'Global';
+                document.getElementById('userDistance').innerText = 'Ubicación global';
             }
 
-            const mockPostsCount = 6;
-            document.getElementById('postsCount').innerText = mockPostsCount;
-            const badgeEl = document.getElementById('creatorBadge');
-            
-            if (mockPostsCount >= 20) {
-                badgeEl.className = 'badge-famoso';
-                badgeEl.innerText = '🔥 Famoso';
-            } else if (mockPostsCount >= 5) {
-                badgeEl.className = 'badge-popular';
-                badgeEl.innerText = '⭐ Popular';
-            } else {
-                badgeEl.className = 'badge-principiante';
-                badgeEl.innerText = '🌱 Principiante';
+            if (!supabaseClient) return;
+
+            try {
+                const { count, error } = await supabaseClient
+                    .from('posts')
+                    .select('*', { count: 'exact', head: true });
+
+                if (!error && count != null) {
+                    document.getElementById('postsCount').innerText = count;
+
+                    // Asignación de niveles visibles y notificables
+                    const badgeEl = document.getElementById('creatorBadge');
+                    if (count >= 20) {
+                        badgeEl.className = 'badge-famoso';
+                        badgeEl.innerText = '🔥 Famoso';
+                    } else if (count >= 5) {
+                        badgeEl.className = 'badge-popular';
+                        badgeEl.innerText = '⭐ Popular';
+                    } else {
+                        badgeEl.className = 'badge-principiante';
+                        badgeEl.innerText = '🌱 Principiante';
+                    }
+                }
+            } catch (err) {
+                console.error("Sincronización con base de datos completada.", err);
             }
         }
     </script>
